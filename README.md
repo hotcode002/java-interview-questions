@@ -2,12 +2,11 @@
 Java Interview Questions
 
 
-[# 21 - What is a Local Variable in Java](#local-variable)
+[# 21 - What is a Local Variable in Java](#what-is-local-variable)
 [# 24 - Local vs Instance vs Static Variables in Java ](#local-vs-instance-vs-static)
 
 
-### local-variable
-What is Local Variable
+### What is Local Variable
 
 Local variables are declared within a method, constructor or block.
 
