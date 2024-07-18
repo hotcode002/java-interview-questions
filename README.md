@@ -25,7 +25,7 @@ class Hello {
 
 Here the variable `name` is declared in the method `showName`. 
 
-```java=
+```java =
 public class Hello {
     
     // Constructor
