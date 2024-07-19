@@ -47,9 +47,6 @@ public class Hello {
     // Constructor
     public Hello() {
 
-        // local variable declared in a method
-        String name = "Campushire"; 
-
         // Block
         {
             // Local variable declared within the block
@@ -138,7 +135,6 @@ public class Person {
 }
 ```
 
-`Output`
 ```shell
 #output
 null
