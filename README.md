@@ -86,9 +86,9 @@ The same logic applies for local variables declared within a constructor or a bl
 
 ### What are Instance Variables
 
-Instance variables are the exact opposite of local variables. They are declared within a class but outside of any method, constructor or block. 
+Instance variables are the exact opposite of local variables. They are declared within a class but outside of any method, constructor or block. Instance variables are used to store the state of the object. 
 
-Instance variables are used to store the state of the object. Here we have an instance variable `name` that is used to store the state of a `Person` object.  
+Here we have an instance variable `name` that is used to store the state of a `Person` object.  
 
 ```java
 public class Person {
@@ -106,7 +106,7 @@ public class Person {
         return name;
     }
 
-public static void main(String[] args) {
+    public static void main(String[] args) {
         // Creating objects of Person class
         Person person1 = new Person("Siva");
     }
