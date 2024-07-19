@@ -116,6 +116,23 @@ There are 4 key things to note here.
 
 2. **Access Modifiers** - While a local variable cannot have access modifiers, instance variables can have access modifiers like private, public or protected.
 
+```java
+public class Person {
+
+    // Instance variable
+    private String name;
+    String address;
+
+
+    public static void main(String[] args) {
+        // Creating objects of Person class
+        Person person1 = new Person("Siva");
+        person1.address = "100 Kondapur, Hyderabad";
+    }
+}
+```
+By the way, you don't have to always specify the access modifier. If you don't specify any, the default is `package-private` - meaning, the variable is accessible only within the package
+
 3. **Lifetime** - While local variables are destroyed beyond the scope of their block, instance variables exist for the entire lifecycle of the object. 
 
 4. **Default values** - While local variables do NOT have any default value, instance variables have default values assigned to them. 
