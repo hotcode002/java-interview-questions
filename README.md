@@ -7,6 +7,10 @@ Java Interview Questions
 - [# 23 - What are Static Variables in Java](#what-are-static-variables)
 - [# 24 - What is a Static Block in Java](#what-is-a-static-block)
 - [# 25 - Difference between static and final in Java](#difference-between-static-and-final)
+- [# 26 - Default values assigned to variables in Java](#default-values-assigned-to-variables)
+1. [# 27 - String vs StringBuffer in Java](#string-vs-stringbuffer)
+1. [# 27 - String vs StringBuffer in Java](#string-vs-stringbuffer)
+
 
 
 ### What is a Local Variable
@@ -327,7 +331,76 @@ public class Circle {
 
 **static** keyword on the other hand is used to store data associated with the class and not  the objects of that class. For example, if you want to calculate how many times you have calculated the area of a circle, have a **static** variable and start incrementing it. 
 
-The Circle objects `c1` and `c2` share the `counter` data. They don't have separate instances for each other. z
+The Circle objects `c1` and `c2` share the `counter` data. They don't have separate instances for each other.
+
+
+### Default values assigned to variables
+
+When you declare a variable and do NOT assign a value to it, Java assigns a default value to it. This would depend on the type of variable.
+
+1. Local Variable - Local variables do not have a default value. If you try to use the unassigned local variable age, you get a syntax error. 
+
+```java
+public class Main {
+    public static void main(String[] args) {
+
+        // Declaration of a local variable
+        int age; 
+
+        // Trying to use age without initialization 
+        // will cause a compile-time error
+        System.out.println(age); 
+
+    }
+}
+```
+
+2. Instance Variable -  Instance variables get default values. Here, even though we haven't assigned a value to age, it still prints 0. 
+
+```java
+class Example {
+    // Instance variable
+    int age; 
+
+    public static void main(String[] args) {
+
+        Example ex = new Example();
+
+        // When you use the instance variable
+        // without initialization it gets a
+        // default value
+        System.out.println(ex.age); 
+
+    }
+}
+```
+
+The default values depend on the data type. Here are the default values for numeric, character, boolean, objects and arrays. 
+
+Numeric types:
+
+byte: 0
+short: 0
+int: 0
+long: 0L
+float: 0.0f
+double: 0.0d
+Character type:
+
+char: null
+
+boolean: false
+
+Reference types 
+(objects, arrays, etc.):null
+
+3. Static Variables - Static variables also have default values. The default values are similar to how instance variables get default values. 
+
+
+
+
+
+
 
 
 
