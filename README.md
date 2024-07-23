@@ -2,14 +2,14 @@
 Java Interview Questions
 
 
-- [# 21 - What is a Local Variable in Java](#what-is-a-local-variable)
-- [# 22 - What are Instance Variables in Java](#what-are-instance-variables)
-- [# 23 - What are Static Variables in Java](#what-are-static-variables)
-- [# 24 - What is a Static Block in Java](#what-is-a-static-block)
-- [# 25 - Difference between static and final in Java](#difference-between-static-and-final)
-- [# 26 - Default values assigned to variables in Java](#default-values-assigned-to-variables)
+1. [# 21 - What is a Local Variable in Java](#what-is-a-local-variable)
+1. [# 22 - What are Instance Variables in Java](#what-are-instance-variables)
+1. [# 23 - What are Static Variables in Java](#what-are-static-variables)
+1. [# 24 - What is a Static Block in Java](#what-is-a-static-block)
+1. [# 25 - Difference between static and final in Java](#difference-between-static-and-final)
+1. [# 26 - Default values assigned to variables in Java](#default-values-assigned-to-variables)
 1. [# 27 - String vs StringBuffer in Java](#string-vs-stringbuffer)
-1. [# 27 - String vs StringBuffer in Java](#string-vs-stringbuffer)
+1. [# 28 - String vs StringBuffer in Java](#string-vs-stringbuffer)
 
 
 
