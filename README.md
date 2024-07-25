@@ -8,8 +8,9 @@ Java Interview Questions
 1. [# 24 - What is a Static Block in Java](#what-is-a-static-block)
 1. [# 25 - Difference between static and final in Java](#difference-between-static-and-final)
 1. [# 26 - Default values assigned to variables in Java](#default-values-assigned-to-variables)
-1. [# 27 - String vs StringBuffer in Java](#string-vs-stringbuffer)
-1. [# 28 - String vs StringBuffer in Java](#string-vs-stringbuffer)
+1. [# 27 - What is `instanceof` operator in java](#-27-what-is-instanceof-operator)
+1. [# 28 - What is `short circuit` evaluation in java](#-28-what-is-short-circuit-evaluation)
+1. [# 29 - What is a `switch` expression in java](#-29-what-is-a-switch-expression)
 
 
 
@@ -316,7 +317,7 @@ public class Circle {
     public final double PI = 3.14159;
 
     // Static variable as a counter
-    public static counter = 0;
+    public static int counter = 0;
 
     public static void main(String[] args) {
         
@@ -397,6 +398,86 @@ Reference types
 3. Static Variables - Static variables also have default values. The default values are similar to how instance variables get default values. 
 
 
+### # 27 What is instanceof operator
+
+The instanceof operator in Java is used to test whether an object is an instance of a specific class or a subclass of that class. Here we have a string `name` and when you say `name instanceof String` you are asking Java, if the variable `name` is an object of type `String` class. In this case it is and you get `true`.
+
+```java
+
+public class Main {
+    public static void main(String[] args) {
+
+        String name = "Hello, World!";
+
+        // returns true becuase name is an 
+        // instance of string Class
+        System.out.println(name instanceof String);
+
+    }
+}
+
+
+```
+
+It does not check just classes, but subclasses as well. Say you have an `Animal` class, and then we have the `Dog` class that extend the `Animal` class. When you say the `Dog` object `d` is an instance of the `Dog` class, it obviously is. But when you ask if it is an instanceof its parent class `Animal`, the answer is still true. Because the `Dog` is just a sub-class of the `Animal` class.
+
+```java
+class Animal {
+}
+
+class Dog extends Animal {
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        Dog d = new Dog();
+      
+        // true
+        System.out.println(d instanceof Dog);    
+
+        // true
+        System.out.println(d instanceof Animal);
+        
+    }
+}
+```
+
+### # 28 What is Short Circuit Evaluation
+
+Short-circuit evaluation means that in logical AND (&&) and logical OR (||) operations, the second operand is evaluated only if necessary. Here is an example
+
+```java
+public class Main {
+    public static void main (String[] args){
+
+        int a = 5;
+
+        // The division by zero is not evaluated 
+        // because the first condition is false
+        boolean result = (a > 10) && (a / 0 == 1); 
+
+        // prints false
+        System.out.println( result );
+
+    }
+}
+
+```
+
+In this logical AND operation, `a = 5` and since 5 is not greater than 10, the left side of the logical AND operation evaluates to `false`. Because it is `false`, Java takes a shortcut and does not evaluate the second part of it and the result will be `false`. This is called as a `short circuit` evaluation. 
+
+The same is true with the logical OR operation. If the first operand evaluates to true, the second operand is not evaluated because the overall expression will be true regardless of the value of the second operand.
+
+```java
+    int a = 5;
+    boolean result = (a > 0) || (a / 0 == 1);
+
+    // truez
+    System.out.println(result);
+```
+
+### # 29 What is a Switch Expression
 
 
 
