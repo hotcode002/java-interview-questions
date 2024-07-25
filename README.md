@@ -13,6 +13,8 @@ Java Interview Questions
 1. [# 29 - What is a `switch` expression in java](#-29-what-is-a-switch-expression)
 1. [# 30 - What is a `enum` data type in java](#-30-what-is-an-enum)
 1. [# 31 - What is Variable Shadowing in java](#-31-variable-shadowing)
+1. [# 32 - What is a `Ternary` operator in java](#-32-ternary-operator)
+1. [# 33 - What is `Type Inference` in java](#33-type-inference)
 
 
 
@@ -608,7 +610,62 @@ We have an instance variable `x` with a value of `5`. Inside the `print` method,
 
 Yes, it is. When you create a local variable with the same name as a variable in it's outer scope, its called **Variable Shadowing**. The word **shadowing** might be a bit confusing. Think of it as overriding. 
 
-When you declare a variable that shadows a variable in it's outer scope, the inner scope variable takes precedence over the outer scope variable. So, in this case, the inner scope variable `x` will have a value of `10` within that scope. 
+When you declare a variable that shadows a variable in it's outer scope, the inner scope variable takes precedence over the outer scope variable. So, in this case, the inner scope variable `x` will have a value of `10` within that scope. \
+
+### # 32 Ternary Operator
+
+```java
+public class Test {
+
+    public static void main(String[] args) {
+
+        int a = 10, b = 20;
+
+        int max = (a > b) ? a : b;
+
+        // Output: Max value: 20
+        System.out.println("Max value: " + max); 
+    }
+
+}
+```
+
+The ternary operator `?` ,  `:` is a shorthand for the if-else statement. The syntax goes like this. 
+
+```java
+condition ? expression1 : expression2
+```
+
+If the condition is true, expression1 is evaluated and returned; otherwise, expression2 is evaluated and returned. In this case, `a` is not greater than `b`. So, the second expression `b` is returned to the `max` variable. 
+
+We can very well nest ternary operators. For example, to find the biggest of 3 numbers `a`, `b` and `c` you can do a nested ternary operator like this. 
+
+```java
+public class Test {
+
+    public static void main(String[] args) {
+
+        int a = 10, b = 20, c = 30;
+
+        int result = a > b ? (a > c ? a : c) : (b > c ? b : c);
+
+        // Output: Max value: 30
+        System.out.println("The largest number is: " + result);
+    }
+
+}
+```
+
+The first expression `a > b` evaluates to false, so the second part of the ternary operator `(b > c ? b : c)` is evaluated.
+Since `b > c` is false, the result is `c`.
+
+### 33 Type Inference
+
+
+
+
+
+
 
 
 
