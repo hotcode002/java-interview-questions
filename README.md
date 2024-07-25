@@ -11,6 +11,10 @@ Java Interview Questions
 1. [# 27 - What is `instanceof` operator in java](#-27-what-is-instanceof-operator)
 1. [# 28 - What is `short circuit` evaluation in java](#-28-what-is-short-circuit-evaluation)
 1. [# 29 - What is a `switch` expression in java](#-29-what-is-a-switch-expression)
+1. [# 30 - What is a `enum` data type in java](#-30-what-is-an-enum)
+1. [# 31 - What is Variable Shadowing in java](#-31-variable-shadowing)
+
+
 
 
 
@@ -478,6 +482,135 @@ The same is true with the logical OR operation. If the first operand evaluates t
 ```
 
 ### # 29 What is a Switch Expression
+
+We know how the `switch` statement works. 
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int day = 3;
+        switch (day) {
+            case 1: 
+                System.out.println("Monday"); 
+                break;
+            case 2: 
+                System.out.println("Tuesday"); 
+                break;
+            case 3: 
+                System.out.println("Wednesday"); 
+                break;
+        }
+    }
+}
+
+```
+
+But, did you know that in Java 12, a new version of `switch` was introduced called the `switch` expression ? Here is how it works. 
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int day = 3;
+        String dayName = switch (day) {
+            case 1 -> "Sunday";
+            case 2 -> "Monday";
+            case 3 -> "Tuesday";
+            case 4 -> "Wednesday";
+        };
+    }
+}
+```
+
+Instead of a colon `:`, we can use the `->` arrow operator to separate the case statement from it's code block. As you can see, the `switch` expression is much more compact compared to the regular `switch` statement. 
+
+If you have multiple lines of code in a block, you can use flower brackets - like so and use the `yield` keyword to return a value.
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        int day = 3;
+        String dayName = switch (day) {
+            case 3 -> {
+                // Multiple statements can be executed here.
+                System.out.println("Sunday");
+                yield "Sunday";
+            }
+            case 2 -> "Monday";
+            case 4 -> "Wednesday";
+            default -> "Not a valid day";
+        };
+    }
+}
+```
+
+Also, there is no need for a `break` statement in a `switch` expression. This reduces a lot of boilerplate code. 
+
+### # 30 What is an `enum`
+
+```java
+public enum CoffeeSize {
+    SMALL,
+    MEDIUM,
+    LARGE
+}
+```
+
+An `enum` (short for "enumeration") is a special data type that represents a group of constants. Here we have 3 coffee sizes - SMALL, MEDIUM and LARGE. 
+
+```java
+public class CoffeeShop {
+    public static void main(String[] args) {
+        CoffeeSize size = CoffeeSize.MEDIUM;
+
+        switch (size) {
+            case SMALL:
+                System.out.println("small coffee.");
+                break;
+            case MEDIUM:
+                System.out.println("medium coffee.");
+                break;
+            case LARGE:
+                System.out.println("large coffee.");
+                break;
+        }
+    }
+}
+```
+
+Here is how we can use `enum` data types. If you observe, these are not strings - you can see that we are not using the constant SMALL in quotes. They are just constants. `enum`s can have methods and constructors as well, but more about that in a separate interview question.
+
+You might now be wondering, why not define coffee sizes using integers or strings - like `1` for `SMALL`, `2` for `MEDIUM` and so on. That's exactly where `enum`s are useful - You see, you don't have to bother about data types like integers or strings. That's what makes `enum`s **type safe** and it also increases code **readability**
+
+### # 31 Variable Shadowing
+
+```java
+public class Test {
+
+    // Instance variable
+    int x = 5;
+
+    public void print() {
+        
+        // Local variable 
+        int x = 10;
+        System.out.println(x);
+
+    }
+
+    public static void main(String[] args) {
+        Test example = new Test();
+        example.print();
+    }
+}
+```
+
+We have an instance variable `x` with a value of `5`. Inside the `print` method, we define a local variable with the same name - `x` but with a different value `10`. Is this even legal ? 
+
+Yes, it is. When you create a local variable with the same name as a variable in it's outer scope, its called **Variable Shadowing**. The word **shadowing** might be a bit confusing. Think of it as overriding. 
+
+When you declare a variable that shadows a variable in it's outer scope, the inner scope variable takes precedence over the outer scope variable. So, in this case, the inner scope variable `x` will have a value of `10` within that scope. 
+
+
 
 
 
