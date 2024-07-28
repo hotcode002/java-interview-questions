@@ -15,6 +15,7 @@ Java Interview Questions
 1. [# 31 - What is Variable Shadowing in java](#-31-variable-shadowing)
 1. [# 32 - What is a `Ternary` operator in java](#-32-ternary-operator)
 1. [# 33 - What is `Type Inference` in java](#33-type-inference)
+1. [# 33 - Swap two numbers using bitwise operators in Java](#34-swap-two-numbers-using-bitwise-operators)
 
 
 
@@ -660,6 +661,93 @@ The first expression `a > b` evaluates to false, so the second part of the terna
 Since `b > c` is false, the result is `c`.
 
 ### 33 Type Inference
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        var message = "Hello, Java!";
+        var number = 42;
+        var list = List.of("A", "B", "C");
+    }
+}
+```
+
+Type inference allows the compiler to Java automatically determine the type of a variable based on the context in which it is used. Here, we are not using the data type - like `String`, `int` or `array`. Instead we are just using the keyword `var` to declare the variable and assigning it to the data directly. 
+
+This looks very cool, right ? Like `python` or `javascript`. It is. But there are some restrictions. 
+
+```java
+public class Test {
+
+    // This is invalid
+    var message = "Hello, Java!";
+
+    public static void main(String[] args) {
+        var message = "Hello, Java!";
+        var number = 42;
+        var list = List.of("A", "B", "C");
+    }
+}
+```
+
+1. You can only use the `var` keyword on local variables. If you try to create an instance variable, java throws an error.
+
+
+```java
+public class Test {
+
+    public static void main(String[] args) {
+        var message;
+        message = "Hello World";
+        var number = 42;
+        var list = List.of("A", "B", "C");
+    }
+}
+```
+2. You have to initialize the variable when declaring it. For example, you cannot just declare the variable with the `var` keyword and not initialize it. Java compiler throws an error. 
+
+
+### #34 Swap two numbers using bitwise operators
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        int a = 5;
+        int b = 3;
+
+        // a now becomes 6 (binary: 0110)
+        a = a ^ b;  
+
+        // b now becomes 5 (binary: 0101)
+        b = a ^ b;  
+
+        // a now becomes 3 (binary: 0011)
+        a = a ^ b;  
+
+    }
+}
+
+```
+
+You can swap two numbers without using a temporary variable by using the XOR operator. The `XOR` operator compares each bit of its operands. Here are the rules. 
+
+`0 ^ 0 = 0`
+`1 ^ 1 = 0`
+`0 ^ 1 = 1`
+`1 ^ 0 = 1`
+
+If the bits are different, the result is 1; if they are the same, the result is 0. Here are the steps.
+
+1. The first step combines both values into `a`, while `b` remains unchanged. This new value in `a` contains information about both `a` and `b`.
+2. The second step extracts the original value of `a` into `b`. This is because XORing the combined value with `b` cancels out `b` and leaves `a`. This effectively moves the original `a` value into `b`.
+3. Now, `b` holds the original value of `a`. The third step extracts the original value of `b` (which is now in `b`) into `a`. This is because XORing the combined value with the new `b` (which is the original `a`) cancels out `a` and leaves `b`.
+
+
+The key thing to understand is that XORing the same value twice cancels out that value, allowing us to manipulate and recover the original numbers.
+
+
+
+
 
 
 
