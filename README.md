@@ -15,7 +15,9 @@ Java Interview Questions
 1. [# 31 - What is Variable Shadowing in java](#-31-variable-shadowing)
 1. [# 32 - What is a `Ternary` operator in java](#-32-ternary-operator)
 1. [# 33 - What is `Type Inference` in java](#33-type-inference)
-1. [# 33 - Swap two numbers using bitwise operators in Java](#34-swap-two-numbers-using-bitwise-operators)
+1. [# 34 - Swap two numbers using bitwise operators in Java](#34-swap-two-numbers-using-bitwise-operators)
+1. [# 35 - Why are Strings `immutable` in java](#35-why-are-strings-immutable)
+
 
 
 
@@ -744,6 +746,77 @@ If the bits are different, the result is 1; if they are the same, the result is 
 
 
 The key thing to understand is that XORing the same value twice cancels out that value, allowing us to manipulate and recover the original numbers.
+
+
+### #35 Why are Strings immutable
+
+```java
+
+public class Test {
+    public static void main(String[] args) {
+    
+        String message = "Hello";
+        System.out.println(System.identityHashCode(message));
+
+        message = "Hello World";
+        System.out.println(System.identityHashCode(message));
+
+    }
+}       
+
+```
+
+Immutability of strings means that once a String object is created, its value cannot be changed. Any modification to a string results in the creation of a new String object rather than altering the existing one. 
+
+In this example, we see that once the string has been changed from "Hello" to "Hello World", the addresses of these strings have changed. 
+
+```sh
+498931366
+2060468723
+```
+
+But do you know why they are immutable ? Security is ofcourse a primary reason, but here are the next top 3 reasons why Java Strings are immutable
+
+1. **String Pooling** - String Pool is an area on the heap where strings are stored. When a new string is created, Java checks in the pool to see if an identical string already exists. If it does, it references the existing string. This reduces memory usage and improves performance. 
+
+2. **Thread Safe** - Since threads are immutable, they can be freely shared between threads without the risk of concurrent modification. This makes strings inherently thread-safe.
+
+3. **Performance** - Because of immutability, the JVM can safely cache and reuse immutable objects, knowing that their state will not change. This results in huge performance improvements. 
+
+
+### #36 What is String Pool
+
+```java
+String str1 = "Hello, World!";
+```
+The `String Pool` in Java, is a special area of memory where the JVM stores String literals like this. Here is how a string pool works. 
+
+```java
+String str1 = "Hello, World!";
+String str2 = "Hello, World!";
+```
+
+When a string literal is created in Java, the JVM checks the string pool to see if an identical string already exists. In this case, when the variable `str2` is created with the same string as `str`, since the text `Hello, World!` already exists in the string pool, instead of creating a new string object a reference to the string `Hello, World!` is returned. 
+
+You can check this by getting their addresses. They will both be pointing to the same address in the string pool. 
+
+```java
+System.out.println(System.identityHashCode(str1));
+System.out.println(System.identityHashCode(str1));
+```
+
+```sh
+498931366
+498931366
+```
+
+The string pool exists in the heap memory. 
+
+There are 2 benefits of using the String pool. 
+
+1. **Memory Efficiency**: By reusing string literals, the JVM conserves memory, as multiple references can point to the same string object.
+2. **Performance**: String comparison using == becomes faster for pooled strings since it involves comparing references instead of checking each character.
+
 
 
 
