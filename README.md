@@ -742,7 +742,7 @@ If the bits are different, the result is 1; if they are the same, the result is 
 
 1. The first step combines both values into `a`, while `b` remains unchanged. This new value in `a` contains information about both `a` and `b`.
 2. The second step extracts the original value of `a` into `b`. This is because XORing the combined value with `b` cancels out `b` and leaves `a`. This effectively moves the original `a` value into `b`.
-3. Now, `b` holds the original value of `a`. The third step extracts the original value of `b` (which is now in `b`) into `a`. This is because XORing the combined value with the new `b` (which is the original `a`) cancels out `a` and leaves `b`.
+3. Now, `b` holds the original value of `a`. The third step extracts the original value of `b` into `a`. This is because XORing the combined value with the new `b` cancels out `a` and leaves `b`.
 
 
 The key thing to understand is that XORing the same value twice cancels out that value, allowing us to manipulate and recover the original numbers.
@@ -779,7 +779,7 @@ But do you know why they are immutable ? Security is ofcourse a primary reason, 
 
 1. **String Pooling** - String Pool is an area on the heap where strings are stored. When a new string is created, Java checks in the pool to see if an identical string already exists. If it does, it references the existing string. This reduces memory usage and improves performance. 
 
-2. **Thread Safe** - Since threads are immutable, they can be freely shared between threads without the risk of concurrent modification. This makes strings inherently thread-safe.
+2. **Thread Safe** - Since strings  are immutable, they can be freely shared between threads without the risk of concurrent modification. This makes strings inherently thread-safe.
 
 3. **Performance** - Because of immutability, the JVM can safely cache and reuse immutable objects, knowing that their state will not change. This results in huge performance improvements. 
 
@@ -807,7 +807,7 @@ System.out.println(System.identityHashCode(str1));
 
 ```sh
 498931366
-498931366
+498931366 
 ```
 
 The string pool exists in the heap memory. 
@@ -816,6 +816,98 @@ There are 2 benefits of using the String pool.
 
 1. **Memory Efficiency**: By reusing string literals, the JVM conserves memory because multiple references can point to the same string object.
 2. **Performance**: String comparison using == becomes faster for pooled strings because we are just comparing references instead of checking each character.
+
+
+
+### #37 Why is String Concatenation in Java Loops inefficient
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        String result = "";
+        for (int i = 0; i < 1000; i++) {
+            result += i;
+        }
+    }
+}
+```
+
+Using the + operator for string concatenation inside a loop is not recommended in Java. Why is that ? As you know, Strings in Java are immutable and this leads to the creation of multiple temporary String objects during the concatenation process.
+
+In a loop, using the + operator repeatedly results in the creation of many temporary String objects. Each iteration of the loop creates a new String object, which involves copying the existing characters to a new array and appending the new characters, leading to a lot of overhead.
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 1000; i++) {
+            sb.append(i);
+        }
+        String result = sb.toString();
+    }
+}
+```
+
+To avoid this, use the `StringBuilder` instead of the `String` class. The `append()` method of StringBuilder modifies the same StringBuilder instance without creating new objects.
+
+### #38 How to reverse a String
+
+There are many problems where you have to reverse strings. Here are 2 ways to reverse a string in Java.
+
+1. Use the built-in `reverse()` method. 
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        String original = "Hello";
+        String reversed = new StringBuilder(original).reverse().toString();
+        System.out.println(reversed);
+    }
+}
+```
+
+If you use the `StringBuilder` or the `StringBuffer` class, it has a built-in `reverse()` method. It is simple and efficient. 
+
+2. Using a `for` loop. Ofcourse, this is the hard way, but you get to be a better programmer by learning this. 
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        String original = "Hello";
+
+        // Reverse the string using a loop directly in the main method
+        char[] chars = original.toCharArray();
+        int left = 0, right = chars.length - 1;
+        while (left < right) {
+            char temp = chars[left];
+            chars[left] = chars[right];
+            chars[right] = temp;
+            left++;
+            right--;
+        }
+        String reversed = new String(chars);
+
+        System.out.println(reversed);
+    }
+}
+```
+
+First, convert the string into a character array using the `toCharArray()` method so that you can work with the individual characters easily. Have two pointers called `left` and `right`. The `left` points to the first character and `right` points to the last character. After each swap, move the `left` pointer to the right and the `right` pointer to the left. Now, keep swapping those characters as long as the `right` pointer is greater than the `left` pointer. 
+
+| Iteration | Char Array |
+|---| ---|
+|Original | Hello|
+|1 | oellH|
+|2 | olleH |
+
+Here is how the loop swaps characters. First `H` and `o`are swapped. Next, `e` and `l` are swapped. And that's it. Finally convert the character array to string using a new String Constructor. 
+
+
+
+
+
+
+
 
 
 
