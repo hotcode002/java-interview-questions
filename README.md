@@ -792,11 +792,11 @@ String str1 = "Hello, World!";
 The `String Pool` in Java, is a special area of memory where the JVM stores String literals like this. Here is how a string pool works. 
 
 ```java
-String str1 = "Hello, World!";
-String str2 = "Hello, World!";
+String string1 = "Hello, World!";
+String string2 = "Hello, World!";
 ```
 
-When a string literal is created in Java, the JVM checks the string pool to see if an identical string already exists. In this case, when the variable `str2` is created with the same string as `str`, since the text `Hello, World!` already exists in the string pool, instead of creating a new string object a reference to the string `Hello, World!` is returned. 
+First we create a string variable `string1` and assign it the string literal `Hello, World!`. Now, when we create the next string `string2` with the same `Hello, World!` string literal, the JVM checks the string pool to see if an `Hello, World!` string already exists. In this case, it already does. So, instead of creating a new string object a reference to the string `Hello, World!` is returned. 
 
 You can check this by getting their addresses. They will both be pointing to the same address in the string pool. 
 
@@ -814,8 +814,8 @@ The string pool exists in the heap memory.
 
 There are 2 benefits of using the String pool. 
 
-1. **Memory Efficiency**: By reusing string literals, the JVM conserves memory, as multiple references can point to the same string object.
-2. **Performance**: String comparison using == becomes faster for pooled strings since it involves comparing references instead of checking each character.
+1. **Memory Efficiency**: By reusing string literals, the JVM conserves memory because multiple references can point to the same string object.
+2. **Performance**: String comparison using == becomes faster for pooled strings because we are just comparing references instead of checking each character.
 
 
 
