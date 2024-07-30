@@ -17,6 +17,12 @@ Java Interview Questions
 1. [# 33 - What is `Type Inference` in java](#33-type-inference)
 1. [# 34 - Swap two numbers using bitwise operators in Java](#34-swap-two-numbers-using-bitwise-operators)
 1. [# 35 - Why are Strings `immutable` in java](#35-why-are-strings-immutable)
+1. [# 36 - What is a `String Pool` in Java](#36-what-is-string-pool)
+1. [# 37 - Why is String concatenation in Java loops inefficient](#37-why-is-string-concatenation-in-java-loops-inefficient)
+1. [# 38 - How to reverse a string in Java](#38-how-to-reverse-a-string )
+1. [# 39 - How to reverse a string with recursion in Java](#39-reverse-a-string-with-recursion)
+1. [# 40 - What does the String's `intern` method do](#40-string-intern-method)
+1. [# 41 - How to count vowels in a String in java](#41-count-vowels-in-a-string)
 
 
 
@@ -901,6 +907,171 @@ First, convert the string into a character array using the `toCharArray()` metho
 |2 | olleH |
 
 Here is how the loop swaps characters. First `H` and `o`are swapped. Next, `e` and `l` are swapped. And that's it. Finally convert the character array to string using a new String Constructor. 
+
+
+### #39 Reverse a String with Recursion
+
+There are many ways to reverse a string and here we are asked specifically to reverse a string using Recursion. 
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        String original = "Hello";
+        String reversed = reverseString(original);
+        System.out.println(original);
+        System.out.println(reversed);
+    }
+
+    // Method to reverse a string using recursion
+    public static String reverseString(String str) {
+        // Base case: if the string is empty or has only one character, return it as is
+        if (str.isEmpty()) {
+            return str;
+        }
+        // Recursive case: reverse the substring and append the first character to the end
+        return reverseString(str.substring(1)) + str.charAt(0);
+    }
+}
+```
+
+The function `reverseString` is called recursively, by cutting off the first character and appending it at the end. Here is how the flow goes.
+
+```java
+ reverseString("Hello")
+  -> reverseString("ello") + 'H'
+    -> reverseString("llo") + 'e'
+      -> reverseString("lo") + 'l'
+        -> reverseString("o") + 'l'
+          -> reverseString("") + 'o'
+            -> ""
+          -> "o"
+        -> "ol"
+      -> "oll"
+    -> "olle"
+  -> "olleH"
+```
+
+In the first call, we are calling the `reverseString` with just `ello` and appending `H` at the end. 
+
+In the second call, we are calling `reverseString` with just `llo`and appending `e` at the end and so on. 
+
+Finally, when the string is empty, recursion reaches the base case and starts to return. This is where we build the reversed string.
+
+As the recursive function returns, the letters are appended from the laste letter `o` all the way to the first letter `H`. And that's how you get the final reversed string. 
+
+### #40 String intern method
+
+In Java, the `intern()` method is used to obtain a canonical representation of a string. Here's what this means:
+
+- The `intern()` method can be called on any String object. When you call `intern()` on a string, Java checks if the string is already in the string pool.
+- If it is, `intern()` returns a reference to the pooled string.
+- If not, `intern()` adds the string to the pool and then returns a reference to it.
+
+```java
+public class Test    {
+    public static void main(String[] args) {
+        String a = new String("example");
+        String b = "example";
+        String c = a.intern();
+
+        System.out.println(a == b);  // false
+        System.out.println(b == c);  // true
+        System.out.println(a == c);  // false
+    }
+}
+```
+Here is an example. 
+
+`a` is Created with the new `String()` method, so it's a new object on the heap, not in the string pool.
+
+`b` is a string literal, so it is stored in the string pool.
+
+`c` calls `a.intern()` which returns a reference to the string "example" from the pool.
+
+`a == b` is false because `a` refers to a new object, while `b` refers to the pooled string.
+
+`b == c`: true because `c`is a reference to the pooled string "example", which is the same as `b`.
+
+`a == c`: false because `a` is a different object compared to `c`, even though they have the same content.
+
+### #41 Count vowels in a string
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        String input = "Hello World";
+        int vowelCount = countVowels(input);
+        System.out.println("Number of vowels: " + 
+        vowelCount);
+    }
+
+    public static int countVowels(String str) {
+        // Convert the string to lowercase to 
+        // handle case insensitivity
+        str = str.toLowerCase();
+        
+        int count = 0;
+        // Iterate through each character 
+        // in the string
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+            // Check if the character is a vowel
+            if (ch == 'a' || ch == 'e' || 
+                ch == 'i' || ch == 'o' || 
+                ch == 'u') {
+                count++;
+            }
+        }
+        return count;
+    }
+}
+```
+
+This question is essentially a test of your skill to traverse all the characters in a string. 
+
+```java
+str = str.toLowerCase();
+```
+
+But before you do that, let's first convert all the characters in the string to lower case - you will see why in a second.
+
+```java
+int count = 0;
+```
+Next, we create a counter to store the number of vowels. 
+
+```java
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+
+        }
+```
+
+Next, we iterate over each character in the string. To look at a particular character we use the `charAt` function of the `String` class. 
+
+```java
+if (ch == 'a' || ch == 'e' || 
+    ch == 'i' || ch == 'o' || 
+    ch == 'u') {
+    count++;
+}
+```
+
+We compare the character with each of the vowels. We are only comparing with lower case letters. Now, you know why we have converted the string to lower case in one of the previous steps. If it's a match increase the counter. 
+
+```java
+return count;
+```
+
+After the loop finishes, the counter would contain the number of vowels in the string. Just return the counter. 
+
+
+
+
+
+
+
+
 
 
 
