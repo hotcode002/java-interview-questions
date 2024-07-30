@@ -23,6 +23,7 @@ Java Interview Questions
 1. [# 39 - How to reverse a string with recursion in Java](#39-reverse-a-string-with-recursion)
 1. [# 40 - What does the String's `intern` method do](#40-string-intern-method)
 1. [# 41 - How to count vowels in a String in java](#41-count-vowels-in-a-string)
+1. [# 42 - How to check if two strings are `Anagrams` in Java](#42-check-if-two-strings-are-anagrams)
 
 
 
@@ -1064,6 +1065,90 @@ return count;
 ```
 
 After the loop finishes, the counter would contain the number of vowels in the string. Just return the counter. 
+
+### #42 Check if two strings are anagrams
+
+```sh
+alert
+later
+```
+
+Two strings are `anagrams` if they contain the same characters in any order. The words **alert** and **later** are anagrams. They have the same letters `a`, `l`, `e`, `r` and `t` , just in a different order. 
+
+```java
+import java.util.Arrays;
+
+public class Test {
+    public static void main(String[] args) {
+        String str1 = "alert";
+        String str2 = "later";
+
+        if (areAnagrams(str1, str2)) {
+            System.out.println(str1 + " and " + str2 + " are anagrams.");
+        } else {
+            System.out.println(str1 + " and " + str2 + " are not anagrams.");
+        }
+    }
+
+    public static boolean areAnagrams(String str1, String str2) {
+        if (str1.length() != str2.length()) {
+            return false;
+        }
+
+        char[] arr1 = str1.toCharArray();
+        char[] arr2 = str2.toCharArray();
+
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+
+        return Arrays.equals(arr1, arr2);
+    }
+}
+```
+
+
+`str1` = `a`, `l`, `e`, `r`, `t`
+`str2` = `l`, `a`, `t`, `e`, `r`
+
+
+The idea here is to first separate the strings into their individual characters.
+
+`str1` = `a`,`e`,`l`,`r`,`t`
+`str2` = `a`,`e`,`l`,`r`,`t`
+
+Then sort them. Now, you can compare them for equality. 
+
+
+```java
+if (str1.length() != str2.length()) {
+    return false;
+}
+```
+To do this in Java, first check if they are of the same length. If not, they are not anagrams. 
+
+```java
+char[] arr1 = str1.toCharArray();
+char[] arr2 = str2.toCharArray();
+```
+
+Next, get the characters of each string into a character array. 
+
+```java
+Arrays.sort(arr1);
+Arrays.sort(arr2);
+```
+
+To get them into order, sort these character arrays using the `sort` method of the built-in `Arrays` class. Now, all the characters are in order for both the strings. 
+
+
+```java
+return Arrays.equals(arr1, arr2);
+```
+
+All you have to do now is call on the `equals` method of the `Arrays` class. Think of it like a String's `equals` method. If all the sorted characters are equal, the strings are anagrams. Otherwise, not.
+
+
+
 
 
 
