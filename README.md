@@ -22,6 +22,7 @@ Java Interview Questions
 1. [# 38 - How to reverse a string in Java](#38-how-to-reverse-a-string )
 1. [# 39 - How to reverse a string with recursion in Java](#39-reverse-a-string-with-recursion)
 1. [# 40 - What does the String's `intern` method do](#40-string-intern-method)
+
 1. [# 41 - How to count vowels in a String in java](#41-count-vowels-in-a-string)
 1. [# 42 - How to check if two strings are `Anagrams` in Java](#42-check-if-two-strings-are-anagrams)
 
@@ -859,7 +860,7 @@ To avoid this, use the `StringBuilder` instead of the `String` class. The `appen
 
 ### #38 How to reverse a String
 
-There are many problems where you have to reverse strings. Here are 2 ways to reverse a string in Java.
+There are many problems where you have to reverse strings. There are many ways to reverse a string in Java and we are going to look at two simple methods. 
 
 1. Use the built-in `reverse()` method. 
 
@@ -964,8 +965,33 @@ As the recursive function returns, the letters are appended from the laste lette
 
 In Java, the `intern()` method is used to obtain a canonical representation of a string. Here's what this means:
 
+```java
+public class Test {
+    public static void main(String[] args) {
+
+        String str1 = "example";
+
+        // Already exists in the pool.
+        // Just a reference is returned
+        String str2 = str1.intern();
+
+    }
+}
+```
+
 - The `intern()` method can be called on any String object. When you call `intern()` on a string, Java checks if the string is already in the string pool.
 - If it is, `intern()` returns a reference to the pooled string.
+
+```java
+public class Test {
+    public static void main(String[] args) {
+
+        // Added to the string pool
+        String str3 = "hello".intern();
+
+    }
+}
+```
 - If not, `intern()` adds the string to the pool and then returns a reference to it.
 
 ```java
@@ -994,6 +1020,157 @@ Here is an example.
 `b == c`: true because `c`is a reference to the pooled string "example", which is the same as `b`.
 
 `a == c`: false because `a` is a different object compared to `c`, even though they have the same content.
+
+### #41 Reverse a String "in-place"
+
+This is LeetCode Problem # 344. The problem statement goes like this
+
+Write a function that reverses a string. The input string is given as an array of characters. The constraint is that you must do this by modifying the input array `in-place` with `o(1)` extra memory. Meaning, we should not use a lot of memory and not use additional data structures. 
+
+Here is an example. 
+
+`Input` - `["h","e","l","l","o"]`
+
+`Ouput` - `["o","l","l","e","h"]`
+
+This can be easily achieved using the `2-pointer` approach. 
+
+```java
+public class Test {
+    public static void main(String[] args) {
+
+        char[] str = { 'h', 'e', 'l', 'l', 'o' };
+        reverseString(str);
+        System.out.println(str);
+
+    }
+
+    public static void reverseString(char[] s) {
+        int left = 0;
+        int right = s.length - 1;
+
+        while (left < right) {
+            // Swap characters at left and right pointers
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+
+            // Move pointers towards the center
+            left++;
+            right--;
+        }
+    }
+}
+```
+
+```java
+    int left = 0;
+    int right = s.length - 1;
+```
+
+Have two pointers called `left` and `right`. The `left` points to the first character and `right` points to the last character.
+
+```java
+    // Swap characters at left and right pointers
+    char temp = s[left];
+    s[left] = s[right];
+    s[right] = temp;
+```
+
+Swap characters at the left and right pointer. 
+
+```java
+    // Move pointers towards the center
+    left++;
+    right--;
+```
+
+After each swap, move the `left` pointer to the right and the `right` pointer to the left. 
+
+```java
+    while (left < right) {
+        // Swap characters at left and right pointers
+        char temp = s[left];
+        s[left] = s[right];
+        s[right] = temp;
+
+        // Move pointers towards the center
+        left++;
+        right--;
+    }
+```
+
+Now, keep swapping those characters as long as the `right` pointer is greater than the `left` pointer.          
+
+| Iteration | Char Array |
+|---| ---|
+|Original | Hello|
+|1 | oellH|
+|2 | olleH |
+
+Here is how the loop swaps characters. First `H` and `o`are swapped. Next, `e` and `l` are swapped. And that's it. Finally convert the character array to string using a new String Constructor. 
+
+
+### #42 Score of a String
+
+This is Leetcode # 3110. You are given a string `s`. The score of a string is defined as the sum of the absolute difference between the ASCII values of adjacent characters.
+
+`Input`: `s = "hello"`
+
+`Output`: `13`
+
+`Explanation`:
+
+The ASCII values of the characters in s are: 
+- 'h' = 104
+- 'e' = 101
+- 'l' = 108
+- 'o' = 111
+
+So, the score of s would be `|104 - 101|` + `|101 - 108|` + `|108 - 108|` + `|108 - 111|` = `3` + `7` + `0` + `3` = `13`.
+
+Here is an example.
+
+```java
+public class Test {
+    public static void main(String[] args) {
+
+        int score = 0;
+        String s = "hello";
+        for (int i = 1; i < s.length(); i++) {
+
+            int diff = s.charAt(i) - s.charAt(i - 1);
+            score += (Math.abs(diff));
+        }
+        System.out.println(score);
+
+    }
+}
+
+```
+And here is the solution. 
+
+First, iterate over the string one character at a time using the for loop.
+
+Inside the loop, to get the the individual character, use the `charAt` method of the string. 
+
+When you subtract two characters, Java automatically computes the ASCII value difference between them. 
+
+```java
+'h' - 'e' = 3
+```
+For example, the character `h` - the character `e` would be `3` because the ascii values are 
+
+`h` - 104
+`e` - 101
+
+`score += (Math.abs(diff));`
+
+Sometimes the difference could be negative. So, use the `Math.abs` method to get the absolute value. 
+
+That't it. By the end of the string, you accumulate all the differences values in the `score` variable. 
+
+
 
 ### #41 Count vowels in a string
 
@@ -1146,42 +1323,3 @@ return Arrays.equals(arr1, arr2);
 ```
 
 All you have to do now is call on the `equals` method of the `Arrays` class. Think of it like a String's `equals` method. If all the sorted characters are equal, the strings are anagrams. Otherwise, not.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
