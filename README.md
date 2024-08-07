@@ -1113,23 +1113,29 @@ Here is how the loop swaps characters. First `H` and `o`are swapped. Next, `e` a
 
 ### #42 Score of a String
 
-This is Leetcode # 3110. You are given a string `s`. The score of a string is defined as the sum of the absolute difference between the ASCII values of adjacent characters.
+This is Leetcode # 3110. 
 
 `Input`: `s = "hello"`
 
 `Output`: `13`
 
+You are given a string `s`. The score of a string is defined as the sum of the absolute difference between the ASCII values of adjacent characters.
+
 `Explanation`:
 
-The ASCII values of the characters in s are: 
 - 'h' = 104
 - 'e' = 101
 - 'l' = 108
 - 'o' = 111
 
-So, the score of s would be `|104 - 101|` + `|101 - 108|` + `|108 - 108|` + `|108 - 111|` = `3` + `7` + `0` + `3` = `13`.
+The ASCII values of the characters in the string `s` are: 
 
-Here is an example.
+`|104 - 101|` + 
+`|101 - 108|` + 
+`|108 - 108|` + 
+`|108 - 111|` = `3` + `7` + `0` + `3` = `13`.
+
+So, the score of string `s` would be `13`.
 
 ```java
 public class Test {
@@ -1178,29 +1184,27 @@ That't it. By the end of the string, you accumulate all the differences values i
 public class Test {
     public static void main(String[] args) {
         String input = "Hello World";
-        int vowelCount = countVowels(input);
-        System.out.println("Number of vowels: " + 
-        vowelCount);
-    }
-
-    public static int countVowels(String str) {
-        // Convert the string to lowercase to 
-        // handle case insensitivity
-        str = str.toLowerCase();
-        
         int count = 0;
-        // Iterate through each character 
+
+        // Convert the string to lowercase to
+        // handle case insensitivity
+        input = input.toLowerCase();
+
+        // Iterate through each character
         // in the string
-        for (int i = 0; i < str.length(); i++) {
-            char ch = str.charAt(i);
+        for (int i = 0; i < input.length(); i++) {
+            char ch = input.charAt(i);
+
             // Check if the character is a vowel
-            if (ch == 'a' || ch == 'e' || 
-                ch == 'i' || ch == 'o' || 
-                ch == 'u') {
+            if (ch == 'a' || ch == 'e' ||
+                    ch == 'i' || ch == 'o' ||
+                    ch == 'u') {
                 count++;
             }
+
         }
-        return count;
+        System.out.println("Number of vowels: " +
+                count);
     }
 }
 ```
@@ -1208,24 +1212,24 @@ public class Test {
 This question is essentially a test of your skill to traverse all the characters in a string. 
 
 ```java
+int count = 0;
+```
+First, we create a counter to store the number of vowels. 
+
+```java
 str = str.toLowerCase();
 ```
 
-But before you do that, let's first convert all the characters in the string to lower case - you will see why in a second.
+Next, let's convert all the characters in the string to lower case - you will see why in a second.
 
 ```java
-int count = 0;
-```
-Next, we create a counter to store the number of vowels. 
+    for (int i = 0; i < str.length(); i++) {
+        char ch = str.charAt(i);
 
-```java
-        for (int i = 0; i < str.length(); i++) {
-            char ch = str.charAt(i);
-
-        }
+    }
 ```
 
-Next, we iterate over each character in the string. To look at a particular character we use the `charAt` function of the `String` class. 
+After that, we iterate over each character in the string. To look at a particular character we use the `charAt` function of the `String` class. 
 
 ```java
 if (ch == 'a' || ch == 'e' || 
@@ -1237,13 +1241,11 @@ if (ch == 'a' || ch == 'e' ||
 
 We compare the character with each of the vowels. We are only comparing with lower case letters. Now, you know why we have converted the string to lower case in one of the previous steps. If it's a match increase the counter. 
 
-```java
-return count;
-```
+After the loop finishes, the counter would contain the number of vowels in the string.
 
-After the loop finishes, the counter would contain the number of vowels in the string. Just return the counter. 
+### #42 Valid Anagram
 
-### #42 Check if two strings are anagrams
+This is also [LeetCode # 242](https://leetcode.com/problems/valid-anagram/description/)
 
 ```sh
 alert
