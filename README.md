@@ -1178,7 +1178,7 @@ That't it. By the end of the string, you accumulate all the differences values i
 
 
 
-### #41 Count vowels in a string
+### #43 Count vowels in a string
 
 ```java
 public class Test {
@@ -1243,7 +1243,7 @@ We compare the character with each of the vowels. We are only comparing with low
 
 After the loop finishes, the counter would contain the number of vowels in the string.
 
-### #42 Valid Anagram
+### #44 Valid Anagram
 
 This is also [LeetCode # 242](https://leetcode.com/problems/valid-anagram/description/)
 
@@ -1325,3 +1325,76 @@ return Arrays.equals(arr1, arr2);
 ```
 
 All you have to do now is call on the `equals` method of the `Arrays` class. Think of it like a String's `equals` method. If all the sorted characters are equal, the strings are anagrams. Otherwise, not.
+
+### #45 Defang IP Address
+
+This is [LeetCode # 1108](https://leetcode.com/problems/defanging-an-ip-address/description/). 
+
+A defanged IP address replaces every period `.` with `[.]`. Here is an example. 
+
+`Input`: `1.1.1.1`
+`Output`: `1[.]1[.]1[.]1`
+
+In case you are wondering why do this, IP addresses are often defanged to prevent accidental or malicious clicking of links. 
+
+```java
+ class Test {
+    public static void main(String[] args) {
+
+        String address = "1.1.1.1";
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < address.length(); i++) {
+
+            char ch = address.charAt(i);
+            if (ch != '.') {
+                sb.append(ch + "");
+            } else {
+                sb.append("[.]");
+            }
+
+        }
+
+        System.out.println(sb);
+    }
+}
+```
+
+Here is how we can solve this. 
+
+```java
+String address = "1.1.1.1";
+```
+
+Say, we have an address like this in a string. 
+
+```java
+StringBuilder sb = new StringBuilder();
+```
+
+Let's create a new `StringBuilder` object that will hold the final de-fanged ip address. 
+
+```java
+ for (int i = 0; i < address.length(); i++) {
+
+}
+```
+
+Now, loop over the ip address string one character at a time. 
+
+```java
+char ch = address.charAt(i);
+if (ch != '.') {
+    sb.append(ch + "");
+} else {
+    sb.append("[.]");
+}
+```
+
+Inside the loop, we take the character, and check if it is a dot `.` character. 
+
+1. If it not, we append it as-is to the new `StringBuilder`object. 
+2. If it is, we replace the dot `.` with its defanged version `[.]`
+
+Once the loop completes, we have the final defanged ip address in the string builder object. 
