@@ -1399,4 +1399,127 @@ Inside the loop, we take the character, and check if it is a dot `.` character.
 
 Once the loop completes, we have the final defanged ip address in the string builder object. 
 
-### #46  
+### #46 String vs StringBuilder vs StringBuffer
+
+All of these are classes used to work with strings, but they have different usecases. Here is a comparision. 
+
+```java
+String str = "Hello";
+
+// Creates a new String object
+str = str + " World";  
+```
+
+1. Immutability
+
+Strings are immutable. Any modification results in the creation of a new String object.
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+
+// Modifies the existing object
+sb.append(" World");  
+```
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+
+// Modifies the existing object
+sb.append(" World");  
+```
+
+But, both `StringBuffer` and `StringBuilder` objects can be modified after they are created. Meaning, these objects can be changed without creating new objects.
+
+2. Performance
+
+```java
+String str = "Hello";
+
+// Creates a new String object
+str = str + " World";  
+```
+
+Because threads are immutable, operations like concatenation create new objects, especially in loops. This makes string manipulation slow and memory intensive. 
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+
+// Modifies the existing object
+sb.append(" World");  
+```
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+
+// Modifies the existing object
+sb.append(" World");  
+```
+
+`StringBuilder` and `StringBuffer` on the other hand are much faster than strings.
+
+3. Thread Safety.
+
+```java
+String str = "Hello";
+
+// Creates a new String object
+str = str + " World";  
+```
+
+Because threads are immutable, they are thread safe by default.
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+
+// Modifies the existing object
+sb.append(" World");  
+```
+StringBuilder on the other hand is not thread-safe. 
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+
+// Modifies the existing object
+sb.append(" World");  
+```
+
+To counter this, Java offers the `StringBuilder` class which is synchronized and thread-safe.
+
+4. Use Cases
+
+```java
+String str = "Hello";
+
+// Creates a new String object
+str = str + " World";  
+```
+
+Use strings when you have a fixed sequence of character that wont change.
+
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+
+// Modifies the existing object
+sb.append(" World");  
+```
+
+Use StringBuilder when you need to modify strings and thread safety is not an issue.
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+
+// Modifies the existing object
+sb.append(" World");  
+```
+
+Use StringBuffer when you need to modify strings in multi-threaded environment.
+
+
+
+
+
+
+
+
+
