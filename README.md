@@ -1128,7 +1128,7 @@ You are given a string `s`. The score of a string is defined as the sum of the a
 - 'l' = 108
 - 'o' = 111
 
-The ASCII values of the characters in the string `s` are: 
+The differences in ASCII values of the characters are: 
 
 `|104 - 101|` + 
 `|101 - 108|` + 
@@ -1398,3 +1398,5 @@ Inside the loop, we take the character, and check if it is a dot `.` character.
 2. If it is, we replace the dot `.` with its defanged version `[.]`
 
 Once the loop completes, we have the final defanged ip address in the string builder object. 
+
+### #46  
