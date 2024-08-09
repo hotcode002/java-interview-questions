@@ -1515,6 +1515,282 @@ sb.append(" World");
 
 Use StringBuffer when you need to modify strings in multi-threaded environment.
 
+### #47 Jewels and Stones LeetCode #771
+
+This is LeetCode #771. 
+
+```java
+String jewels = "aA";
+String stones = "aAAbbbb";
+```
+You are given 2 strings. The characters in the first String are jewels and the second one are stones. Any stone can be a jewel. Your job is to figure out how many how many of these stones are jewels. 
+
+```java
+class Test {
+    public static void main (String[] args) {
+
+        String jewels = "aA";
+        String stones = "aAAbbbb";
+        int count = 0;
+
+        // For each stone...
+        for (char s: stones.toCharArray()) 
+
+            // For each jewel...
+            for (char j: jewels.toCharArray()) 
+
+                // If the stone is a jewel...
+                if (j == s) {  
+                    count++;
+
+                    // Stop searching whether this stone 's' is a jewel
+                    break; 
+                }
+        System.out.println(count);
+    }
+}
+```
+
+We are going to first try the brute force approach. In video # 48, we will look at an optimized solution. 
+
+```java
+int count = 0;
+```
+
+First set a counter to 0. 
+
+```java
+// For each stone...
+for (char s: stones.toCharArray()) {
+
+}
+```
+
+Next, start to loop over each stone. 
+
+```java
+// For each jewel...
+for (char j: jewels.toCharArray()) {
+
+}
+```
+
+For each stone, we have to figure out if it is a jewel or not. To do that, we have to loop over the jewels character array. 
+
+```java
+// If the stone is a jewel...
+if (j == s) {  
+    count++;
+
+    // Stop searching whether this stone 's' is a jewel
+    break; 
+}
+```
+
+Check if the stone is a jewel or not. If it is, increase the counter and stop searching further. If not, keep going. 
+
+```java
+// For each stone...
+for (char s: stones.toCharArray()) 
+
+    // For each jewel...
+    for (char j: jewels.toCharArray()) 
+
+        // If the stone is a jewel...
+        if (j == s) {  
+            count++;
+
+            // Stop searching whether this stone 's' is a jewel
+            break; 
+        }
+```
+
+Loop through until all the stones are checked against the jewels. 
+
+```java
+System.out.println(count);
+```
+
+Now, the count variable should have the number of jewels. 
+
+Remember, this is a brute force approach and in Question #48, we will look at a more optimized way of doing this. 
+
+### #48 Jewels and Stones LeetCode #771
+
+In Question #48, we have solved this problem using brute force approach. Now, we are going to look at a more optimized solution. 
+
+```java
+class Test {
+    public static void main (String[] args) {
+
+        String jewels = "aA";
+        String stones = "aAAbbbb";
+        int count = 0;
+
+        // For each stone...
+        for (char s: stones.toCharArray()) 
+
+            // For each jewel...
+            for (char j: jewels.toCharArray()) 
+
+                // If the stone is a jewel...
+                if (j == s) {  
+                    count++;
+
+                    // Stop searching whether this stone 's' is a jewel
+                    break; 
+                }
+        System.out.println(count);
+    }
+}
+```
+
+In the brute force approach, we were sequentially checking the jewels array to figure out if each stone is a jewel or not. This sequential check is what causes the double for loop, which is computationally expensive. 
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+class Test {
+    public static void main(String[] args) {
+
+        String jewels = "aA";
+        String stones = "aAAbbbb";
+
+        // A new hashset to hold jewels
+        Set<Character> jewelHashSet = new HashSet<>();
+
+        // Fill the hashset with jewels
+        for (char j : jewels.toCharArray())
+            jewelHashSet.add(j);
+
+        int count = 0;
+        for (char s : stones.toCharArray())
+            if (jewelHashSet.contains(s))
+                count++;
+        System.out.println(count);
+    }
+}
+```
+Instead, we are going to use a `HashSet` data structure in the Java Collections library. There are two key features of a hash set.
+
+```java
+// A new hashset to hold jewels
+Set<Character> jewelHashSet = new HashSet<>();
+
+// Fill the hashset with jewels
+for (char j : jewels.toCharArray())
+    jewelHashSet.add(j);
+```
+1. There can only be one unique value in a hash set. So, let's add all unique jewels to the `HashSet` using the `add()` method. 
+
+```java
+if (jewelHashSet.contains(s))
+    count++;
+```
+
+2. To check if a value exists in a hashset, you don't have to loop through it. Instead, you can just get it directly using the `contains()` method with `O(1)` complexity.
+
+```java
+for (char s : stones.toCharArray())
+    if (jewelHashSet.contains(s))
+        count++;
+```
+
+In essence, what we have done here is eliminated the double `for` loop. And the data structure we have used to do this is the `HashSet`.
+
+
+### #49 Substrings in Word LeetCode #1967
+
+This is LeetCode #1967. 
+
+```java
+String[] patterns = {"a","abc","bc","d"};
+```
+
+You are given an array of strings called `patterns`.
+
+```java
+String word = "abc";
+```
+
+and another string `word` say `abc`. You have to find the number of strings in `patterns` that are substrings of `abc`. 
+
+`a` is a substring of `abc`
+`abc` is a substring of `abc`
+`bc` is a substing of `abc`
+`d` is NOT a substring of `abc`
+
+So, the answer is 3. 
+
+There are a couple of ways to do this. 
+
+```java
+class Test {
+    public static void main(String[] args) {
+
+        String[] patterns = { "a", "abc", "bc", "d" };
+        String word = "abc";
+
+        int count = 0;
+        for (String pattern : patterns) {
+            if (word.contains(pattern)) {
+                count++;
+            }
+        }
+        System.out.println(count);
+
+    }
+}
+```
+
+1. Use the `contains()` method. Have a counter and set it to 0. Loop over the patterns array. Inside the loop, use the `contains` method to check against the word. It returns `true` if the string is a substring. Increase the counter if it is a substring.
+
+```java
+class Test {
+    public static void main(String[] args) {
+
+        String[] patterns = { "a", "abc", "bc", "d" };
+        String word = "abc";
+
+        int count = 0;
+        for (String pattern : patterns) {
+            if (word.indexOf(pattern) != -1) {
+                count++;
+            }
+        }
+        System.out.println(count);
+
+    }
+}
+```
+
+2. Use the `indexOf()` method which returns the index of the first occurrence of the substring. If it is not a substring, `indexOf` returns -1. So, if it is not -1, increase the counter. 
+
+```java
+String[] patterns = { "a", "abc", "bc", "d" };
+String word = "abc";
+```
+The time complexity of this is `O(m*n)` where `m` is the number of patterns and `n` is the length of the word. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
