@@ -22,7 +22,6 @@ Java Interview Questions
 1. [# 38 - How to reverse a string in Java](#38-how-to-reverse-a-string )
 1. [# 39 - How to reverse a string with recursion in Java](#39-reverse-a-string-with-recursion)
 1. [# 40 - What does the String's `intern` method do](#40-string-intern-method)
-
 1. [# 41 - How to count vowels in a String in java](#41-count-vowels-in-a-string)
 1. [# 42 - How to check if two strings are `Anagrams` in Java](#42-check-if-two-strings-are-anagrams)
 
@@ -1773,19 +1772,527 @@ String word = "abc";
 ```
 The time complexity of this is `O(m*n)` where `m` is the number of patterns and `n` is the length of the word. 
 
+### #50 Remove Training Zeros from String - LeetCode #1967
+
+```java
+String num = "51230100";
+```
+
+This is LeetCode #1967. We are given a number as a string. We should chop off all the trailing zeros and return the remaining part of the number.
+
++---+ +---+ +---+ +---+ +---+ +---+ +---+ +---+
+| 5 | | 1 | | 2 | | 3 | | 0 | | 1 | | 0 | | 0 |
++---+ +---+ +---+ +---+ +---+ +---+ +---+ +---+
+
+For example, in this case, there are two trailing zeros.
+
++---+ +---+ +---+ +---+ +---+ +---+
+| 5 | | 1 | | 2 | | 3 | | 0 | | 1 |
++---+ +---+ +---+ +---+ +---+ +---+
+
+Chop off the last zeros and just return 512301. 
+
+```java
+int len = num.length();
+```
+
+First, get the length of the string. 
+
+```java
+for (int i = len - 1; i >= 0; i--) {
+
+}
+```
+
+Start loop from the end of the string.
+
+```java
+if (num.charAt(i) != '0') {
+    System.out.println(num.substring(0, i + 1));
+    System.exit(0);
+}
+```
+
+Check if the character is zero or not. To do that, we use the string functions `charAt()` method to get the `i`th character in the string. If the character is zero, continue the loop. The moment, the character is not zero, that's the point we want to stop.
+
+                                            |
++---+ +---+ +---+ +---+ +---+ +---+ +---+ +---+
+| 5 | | 1 | | 2 | | 3 | | 0 | | 1 | | 0 | | 0 |
++---+ +---+ +---+ +---+ +---+ +---+ +---+ +---+
+
+For example, we start here, at this character. Since it is zero, we continue backwards in the loop. 
+
+                                      |
++---+ +---+ +---+ +---+ +---+ +---+ +---+ +---+
+| 5 | | 1 | | 2 | | 3 | | 0 | | 1 | | 0 | | 0 |
++---+ +---+ +---+ +---+ +---+ +---+ +---+ +---+
+
+The next character is also zero, so we continue further in the loop. 
+
+                                |
++---+ +---+ +---+ +---+ +---+ +---+ +---+ +---+
+| 5 | | 1 | | 2 | | 3 | | 0 | | 1 | | 0 | | 0 |
++---+ +---+ +---+ +---+ +---+ +---+ +---+ +---+
+
+Finally, we have hit a non-zero number. 
+
+        Extract this substring
+|-------------------------------|
++---+ +---+ +---+ +---+ +---+ +---+ +---+ +---+
+| 5 | | 1 | | 2 | | 3 | | 0 | | 1 | | 0 | | 0 |
++---+ +---+ +---+ +---+ +---+ +---+ +---+ +---+
+
+Since `i` holds the index of the first non-zero character from the end, backwards, all we have to do now is get a substring from index `0` to `i+1`. 
+
+### #51 Default Constructor Overloading
+
+```java
+class Example {
+    int x;
+
+    // If we don't provide a default
+    // constructor, Java will do it for us
+    Example() {
+    }
+}
+```
+We know that if we don't provide a default constructor, Java will do it for us. 
+
+```java
+class Example {
+    int x;
+
+    Example(int i) {
+        x = i;
+    }
+}
+```
+
+But, what happens if you overload a constructor, but don't provide a no-argument constructor ? For example, in this class, we have a parameterized constructor, but we have not provided a default constructor. 
+
+```java
+class Test {
+
+    public static void main(String[] args) {
+
+        // Compilation Error
+        Example obj = new Example();
+
+    }
+}
+```
+
+If we try to instantiate this class with a default constructor, Java throws a compile time error. So, the moral of the story is, if we define any constructor in our Java class, the compiler will not automatically generate a default constructor for us. We must have to declare it explicitly. 
+
+### #52 Constructor Chaining
+
+```java
+class Test {
+
+    int i;
+
+    public Test() {
+        this(0);
+        System.out.println("Default Constructor");
+    }
+
+    public Test(int i) {
+        this.i = i;
+        System.out.println("Parameterized Constructor");
+
+    }
+
+    public static void main(String[] args) {
+
+        Test test = new Test();
+
+    }
+}
+```
+
+Can we call one constructor from another ?
+
+```java
+this(0);
+```
+
+Is this even valid ? Yes it is. It is called `Constructor Chaining`. 
+
+```java
+int i;
+
+public Test(int i) {
+    this.i = i;
+    System.out.println("Parameterized Constructor");
+
+}   
+```
+Here, we have an instance variable `i`. 
+
+```java
+Test test = new Test();
+```
+If we are not using the parameterized constructor, say we want to default `i` to `0`. How would we do it ?
+
+```java
+int i;
+
+public Test() {
+    this(0);
+    System.out.println("Default Constructor");
+}
+```
+
+Simple, have a new default constructor and call the other constructor using the `this` keyword. 
+
+```java
+public Test(int i) {
+    System.out.println("Parameterized Constructor");
+    this.i = i;
+}
+```
+
+Let's check this out. Put a print statement in the parameterized constructor and let's see if Java calls this from the default constructor using the this keyword. 
+
+```sh
+Parameterized Constructor
+Default Constructor
+```
+
+As you can see from the output, Java first calls the default constructor, which in turn calls the parameterized constructor to initialize the variable `i` to `0`.
+
+In case you are wondering Why is it used, it essentially helps in code reuse and reducing redundancy.
 
 
+### #53 Constructor Chaining with Superclass
+
+```java
+class Test {
+
+    int i;
+
+    public Test() {
+        this(0);
+    }
+
+    public Test(int i) {
+        this.i = i;
+    }
+
+    public static void main(String[] args) {
+
+        Test test = new Test();
+
+    }
+}
+```
+
+In Question #52, we have seen what is `Constructor Chaining`. It is just calling one constructor from another. We have see an example of calling one constructor from another with in the same class using the `this` keyword. 
+
+But, whaþ if we want to call a parent class' constructor ? Can we do it ? Yes ofcourse we can. The only difference is that, instead of the `this` keyword, we have to use the `super` keyword.
+
+```java
+class Parent {
+    public Parent() {
+    }
+
+    public Parent(String msg) {
+    }
+}
+```
+
+Say, we have a `Parent` class with two constructors. 
+
+```java
+class Child extends Parent {
+    public Child() {
+    }
+}
+```
+
+And, we have a `Child` class that extends the `Parent` class.
+
+```java
+class Child extends Parent {
+    public Child() {
+        super("Called from Child");
+    }
+}
+```
+
+To call the parent's constructor, just call it using the `super` keyword. 
+
+```java
+class Parent {
+    public Parent() {
+        System.out.println("Parent default constructor");
+    }
+
+    public Parent(String msg) {
+        System.out.println("Parent parameterized constructor: " + msg);
+    }
+}
+
+class Child extends Parent {
+    public Child() {
+         // Calls the parameterized constructor of Parent
+        super("Called from Child");
+        System.out.println("Child default constructor");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Child obj = new Child();
+    }
+}
+```
+
+Here is the full example.  
 
 
+```sh
+Parent parameterized constructor: Called from Child
+Child default constructor
+```
+
+The `Child` class is instantiated using it's constructor and in the constructor of the child class, we are calling the parent class' constructor using the `super` keyword. That's why, you see the output from the `Parent` class first and then the `Child` class.
 
 
+### #54 Private Constructor
+
+```java
+class Animal {
+    Animal() {
+
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Animal a = new Animal();
+    }
+}
+```
+We know that a constructor is used when creating an object from a class. 
+
+```java
+class Animal {
+    Animal() {
+
+    }
+}
+```
+
+By default, a constructor is `public`. 
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        Animal a = new Animal();
+    }
+}
+```
+
+And that's why we are able to call it when creating a new object. 
+
+```java
+class Animal {
+    private Animal() {
+
+    }
+}
+```
+
+But, what happens when you make the constructor private ? 
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        Animal a = new Animal();
+    }
+}
+```
+
+Will you be able to create a new object ? No, the compiler immediately complains that the constructor is not visible. Makes sense, right ? But, what is the point in making the constructor private when it prevents you from creating a new object out of the class ?
 
 
+- `Singleton Pattern`
+- `Utility Classes`
+- `Factory Pattern`
+- `Immutable Classes`
+- `Preventing Subclassing`
+
+There are atleast 5 reasons why constructors are made private. Let's just take one example - Utility Classes.
+
+```java
+public class Test {
+    public static void main(String[] args) {
+        int max = Math.max(1, 2);
+    }
+}
+```
+
+When using any of the `Math` class' methods, do we create the object out of it first and then use it ? No, right ? 
+
+```java
+public final class Math {
+
+    // Private constructor prevents instantiation
+    private Math() {}
+    
+    // Various static methods like 
+    //abs, sqrt, sin, cos, etc.
+}
+```
+
+This is because the `Math` class has a private constructor. Java doesn't want you to create an Math object. 
+
+```java
+public final class Math {
+
+    // Private constructor prevents instantiation
+    private Math() {}
+    
+    public static max(int i, int j){
+        // implementation 
+    }
+}
+```
+
+Instead, all the usable methods in it like `max`, `min`, `abs` are all defined as `public` and `static`. 
+
+```java
+int max = Math.max(1, 2);
+```
+
+And that's why we are able to instantiate it directly using the class name itself. 
+
+### #55 Constructors with return type
+
+```java
+class Example {
+    Example() {
+        System.out.println("Constructor called");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Example obj = new Example();
+        obj.Example();
+    }
+}
+```
+
+Whenever you declare a constructor, you don't put a return type. A constructor is just supposed to initialize a class and not return anything. 
+
+```java
+void Example() {
+    System.out.println("Method called");
+}
+```
+
+But, what if you specify a return type ? Can you still call it a constructor ? The answer is NO. 
+
+```java
+// This is not a constructor, just a method
+// with the same name as the class
+void Example() {
+    System.out.println("Method called");
+}
+```
+
+When you specify a return type, the constructor is deemed by Java as just another method - not a constructor. Just remember, constructors don't have a return type. Not even `void`. 
 
 
+### #56 Default Constructor in a Parent Class
 
+```java
+class Parent {
+    Parent(int x) {
+    }
+}
 
+class Child extends Parent {
+    Child() {
+    }
+}
 
+public class Test {
+    public static void main(String[] args) {
+        Child obj = new Child();
+    }
+}
+```
+
+Here, we have a `Child` class that inherits from a `Parent` class. 
+
+```java
+Child obj = new Child();
+```
+We are trying to instantiate the `Child` class using the default constructor. Does this work ? No, it does not. Here is why.
+
+```java
+class Parent {
+    Parent(int x) {
+    }
+}
+```
+
+The parent class does NOT have a default constructor. It only has a parameterized constructor. 
+
+```java
+class Child extends Parent {
+    Child() {
+    }
+}
+```
+When the child class is called with it's default constructor, Java by default also invokes the parent class' default constructor.
+
+```java
+class Parent {
+    Parent(int x) {
+    }
+}
+```
+In this case, the parent does NOT have a default constructor. Java compiler identifies this and throws an error. 
+
+```java
+class Parent {
+    Parent() {
+    }
+
+    Parent(int x) {
+    }
+}
+```
+To fix this, have a default constructor in the parent as well. 
+
+```java
+class Parent {
+    Parent(){ // <-- Called automatically
+    }
+
+    Parent(int x) {
+    }
+}
+
+class Child extends Parent {
+    Child() {  // <--
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Child obj = new Child();  // <--
+    }
+}
+```
+
+The key point to understand is that when a child class` default constructor is called, Java automatically calls the default constructor of the parent class as well. 
+
+### #57 Default Constructor in a Parent Class
 
 
 
