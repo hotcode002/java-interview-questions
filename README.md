@@ -1884,7 +1884,7 @@ class Test {
 
 If we try to instantiate this class with a default constructor, Java throws a compile time error. So, the moral of the story is, if we define any constructor in our Java class, the compiler will not automatically generate a default constructor for us. We must have to declare it explicitly. 
 
-### #52 Constructor Chaining
+### #52 What is Constructor Chaining
 
 ```java
 class Test {
@@ -2059,7 +2059,7 @@ Child default constructor
 The `Child` class is instantiated using it's constructor and in the constructor of the child class, we are calling the parent class' constructor using the `super` keyword. That's why, you see the output from the `Parent` class first and then the `Child` class.
 
 
-### #54 Private Constructor
+### #54 Why are Private Constructors used
 
 ```java
 class Animal {
@@ -2168,7 +2168,7 @@ int max = Math.max(1, 2);
 
 And that's why we are able to instantiate it directly using the class name itself. 
 
-### #55 Constructors with return type
+### #55 Can we have Constructors with return type
 
 ```java
 class Example {
@@ -2293,9 +2293,6 @@ public class Test {
 The key point to understand is that when a child class` default constructor is called, Java automatically calls the default constructor of the parent class as well. 
 
 ### #57 Default Constructor in a Parent Class
-
-
-<path d="m20.41 8.41-4.83-4.83c-.37-.37-.88-.58-1.41-.58H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V9.83c0-.53-.21-1.04-.59-1.42M7 7h7v2H7zm10 10H7v-2h10zm0-4H7v-2h10z"></path>
 
 
 
