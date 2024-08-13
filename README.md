@@ -1482,7 +1482,7 @@ StringBuffer sb = new StringBuffer("Hello");
 sb.append(" World");  
 ```
 
-To counter this, Java offers the `StringBuilder` class which is synchronized and thread-safe.
+To counter this, Java offers the `StringBuffer` class which is synchronized and thread-safe.
 
 4. Use Cases
 
@@ -1772,13 +1772,13 @@ String word = "abc";
 ```
 The time complexity of this is `O(m*n)` where `m` is the number of patterns and `n` is the length of the word. 
 
-### #50 Remove Training Zeros from String - LeetCode #1967
+### #50 Remove Training Zeros from String - LeetCode #2710
 
 ```java
 String num = "51230100";
 ```
 
-This is LeetCode #1967. We are given a number as a string. We should chop off all the trailing zeros and return the remaining part of the number.
+This is LeetCode #2710. We are given a number as a string. We should chop off all the trailing zeros and return the remaining part of the number.
 
 +---+ +---+ +---+ +---+ +---+ +---+ +---+ +---+
 | 5 | | 1 | | 2 | | 3 | | 0 | | 1 | | 0 | | 0 |
@@ -2293,6 +2293,9 @@ public class Test {
 The key point to understand is that when a child class` default constructor is called, Java automatically calls the default constructor of the parent class as well. 
 
 ### #57 Default Constructor in a Parent Class
+
+
+<path d="m20.41 8.41-4.83-4.83c-.37-.37-.88-.58-1.41-.58H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V9.83c0-.53-.21-1.04-.59-1.42M7 7h7v2H7zm10 10H7v-2h10zm0-4H7v-2h10z"></path>
 
 
 
