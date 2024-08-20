@@ -1844,7 +1844,298 @@ Finally, we have hit a non-zero number.
 
 Since `i` holds the index of the first non-zero character from the end, backwards, all we have to do now is get a substring from index `0` to `i+1`. 
 
-### #51 Default Constructor Overloading
+### #51 What is a Class in Java
+
++-------------------------+
+|        MyClass          |  <-- Class Name
++-------------------------+
+| - attribute1: int       |  <-- Attribute
+| - attribute2: String    |  
++-------------------------+
+| + method1(): void       |  <-- Method
+| + method2(): int        |
++-------------------------+
+
+This is probably the most basic questions in Java. A class in Java is a blueprint for creating objects. In general, It has 3 things
+
+1. A class name
+2. Attributes that represent properties of the object
+3. Methods that represent behaviours of the object. 
+
+```java
+class BankAccount {
+
+    // Attributes
+    String name;
+    int number;
+    double balance;
+
+    // Method to deposit money
+    void deposit(double amount) {
+        balance += amount;
+    }
+
+    // Method to check the balance
+    double getBalance() {
+        return balance;
+    }
+}
+```
+
+For example, if you wanted to create a Bank account class, here is how you would start
+
+```java
+class BankAccount {
+}
+```
+1. Start with a name and to specify that it is a class use the `class` keyword. 
+
+
+```java
+// Attributes
+String name;
+int number;
+double balance;
+```
+
+2. Every bank account has say a name, account number and balance. We define them as `attributes` using the required data types - like `String`, `int` or `double`. 
+
+```java
+// Method to deposit money
+void deposit(double amount) {
+    balance += amount;
+}
+
+// Method to check the balance
+double getBalance() {
+    return balance;
+}
+```
+
+3. What are the actions you do on the bank account ? You deposit money, get the balance in the account and so on, right ? Define them as `methods`. 
+
+That's all there is to a class. Just remember the 3 key things
+
+1. Declare the class using the `class` keyword with a name.
+2. Define it's properties using `Attributes` and
+3. Define it's behaviour using `Methods`
+
+### #52 What is an Object in Java
+
+In question #51, we have seen what a `class` is. An object is an instance of a class. Think of `class` as a blueprint and `object` as a real version of the class. 
+
+```java
+class BankAccount {
+
+    // Attributes
+    String name;
+    int number;
+    double balance;
+
+    // Method to deposit money
+    void deposit(double amount) {
+        balance += amount;
+    }
+
+    // Method to check the balance
+    double getBalance() {
+        return balance;
+    }
+}
+```
+Let's create an `object` from the `BankAccount` class we have seen in question #51. 
+
+```java
+public static void main(String[] args) {
+    BankAccount account = new BankAccount();
+}
+```
+
+To do that, we have to use the `new` keyword along with the class name. Here `BankAccount` is the class name and `account` is an object of class `BankAccount`. Don't worry about the statement `public static void main` - We will talk about it later. For now, just put it in.
+
+```java
+public static void main(String[] args) {
+    BankAccount account = new BankAccount();
+    account.name = "CampusHire";
+    account.number = 123;
+    account.balance = 0;
+
+    account.deposit(100);
+    System.out.println(account.getBalance());
+}
+```
+
+Using the `new` keyword, Java gives life to a new object of type `BankAccount` class. Once we have the object, we can start to fill it in. Like, give it a name, number and balance. You access its properties using the `.` operator. 
+
+```java
+public static void main(String[] args) {
+    BankAccount account = new BankAccount();
+    account.name = "CampusHire";
+    account.number = 123;
+    account.balance = 0;
+
+    account.deposit(100);
+    System.out.println(account.getBalance());
+}
+```
+
+You can now access it's behaviours using its methods. For example, we deposit 100 rupees into the account object. And use the getBalance() method to get thee account balance. 
+
+### #53 What is a Java Constructor
+
+```java
+class BankAccount {
+
+    // Attributes
+    String name;
+    int number;
+    double balance;
+
+    // Method to deposit money
+    void deposit(double amount) {
+        balance += amount;
+    }
+
+    // Method to check the balance
+    double getBalance() {
+        return balance;
+    }
+}
+```
+
+In Question #51 and #52, we have seen what classes and objects are using the `BankAccount` example. 
+
+```java
+BankAccount account = new BankAccount();
+```
+
+We have created a new `BankAccount` object using the `new` keyword and specifying the class name with paranthesis. Java then constructs a new object on the heap and assigns it to the variable `account. 
+
+```java
+class BankAccount {
+
+    // Attributes
+    String name;
+    int number;
+    double balance;
+
+    BankAccount(){
+        System.out.println("object initialized");
+    }
+
+    // Method to deposit money
+    void deposit(double amount) {
+        balance += amount;
+    }
+
+    // Method to check the balance
+    double getBalance() {
+        return balance;
+    }
+}
+```
+
+But, before doing that, Java calls a special method called the `constructor`. Think of it as an initializer. 
+
+
+```java
+public static void main(String[] args) {
+    BankAccount account = new BankAccount();
+}
+```
+
+When you create a new `BankAccount` object, you can see that the print statement in the constructor is called automatically.
+
+```java
+class BankAccount {
+
+    // Attributes
+    String name;
+    int number;
+    double balance;
+
+    BankAccount(double balance){
+        this.balance = balance;        
+    }
+
+    // Method to deposit money
+    void deposit(double amount) {
+        balance += amount;
+    }
+
+    // Method to check the balance
+    double getBalance() {
+        return balance;
+    }
+}
+```
+
+You can do some initialization activities here. For example, say everytime a new account is created, it is mandatory to create it with a non-zero balance. You can create the constructor with an balance variable that is used to initialize the account balance. 
+
+```java
+public static void main(String[] args) {
+    BankAccount account = new BankAccount(100);
+}
+```
+
+And here is how you create the BankAccount class with a balance of 100 rupees. 
+
+
+### #54 Types of Constructors
+
+There are 2 types of constructors in Java. 
+
+1. Default Constructor
+2. Paremeterized Constructor
+
+We have already seen examples of these in Question #53. 
+
+```java
+class BankAccount {
+
+    // Attributes
+    String name;
+    int number;
+    double balance;
+
+    BankAccount(){
+        System.out.println("object initialized");
+    }
+}
+```
+
+This is an example of a default constructor. It does not have any arguments. If you don't provide it, Java automatically creates one for you, right at the time of compilation.
+
+```java
+class BankAccount {
+
+    // Attributes
+    String name;
+    int number;
+    double balance;
+
+    BankAccount(double balance){
+        this.balance = balance;        
+    }
+}
+```
+
+When you specify a parameter to the constructor, it is called as a `parameterized` constructor. You can provide more than one parameter. 
+
+
+```java
+public static void main(String[] args) {
+    BankAccount account = new BankAccount(100);
+}
+```
+
+The purpose of these parameters is to provide flexibility in the way the new objects are created.
+
+
+### #55 Constructor Overloading 
+
+
+### #56 Default Constructor Overloading
 
 ```java
 class Example {
@@ -1884,7 +2175,7 @@ class Test {
 
 If we try to instantiate this class with a default constructor, Java throws a compile time error. So, the moral of the story is, if we define any constructor in our Java class, the compiler will not automatically generate a default constructor for us. We must have to declare it explicitly. 
 
-### #52 What is Constructor Chaining
+### #57 What is Constructor Chaining
 
 ```java
 class Test {
@@ -1964,7 +2255,7 @@ As you can see from the output, Java first calls the default constructor, which 
 In case you are wondering Why is it used, it essentially helps in code reuse and reducing redundancy.
 
 
-### #53 Constructor Chaining with Superclass
+### #58 Constructor Chaining with Superclass
 
 ```java
 class Test {
@@ -2059,7 +2350,7 @@ Child default constructor
 The `Child` class is instantiated using it's constructor and in the constructor of the child class, we are calling the parent class' constructor using the `super` keyword. That's why, you see the output from the `Parent` class first and then the `Child` class.
 
 
-### #54 Why are Private Constructors used
+### #59 Why are Private Constructors used
 
 ```java
 class Animal {
@@ -2168,7 +2459,7 @@ int max = Math.max(1, 2);
 
 And that's why we are able to instantiate it directly using the class name itself. 
 
-### #55 Can we have Constructors with return type
+### #58 Can we have Constructors with return type
 
 ```java
 class Example {
@@ -2206,7 +2497,7 @@ void Example() {
 When you specify a return type, the constructor is deemed by Java as just another method - not a constructor. Just remember, constructors don't have a return type. Not even `void`. 
 
 
-### #56 Default Constructor in a Parent Class
+### #60 Default Constructor in a Parent Class
 
 ```java
 class Parent {
@@ -2292,7 +2583,7 @@ public class Test {
 
 The key point to understand is that when a child class` default constructor is called, Java automatically calls the default constructor of the parent class as well. 
 
-### #57 Default Constructor in a Parent Class
+### #60 Constructor Delegation
 
 
 
