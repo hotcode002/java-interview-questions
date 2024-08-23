@@ -2134,6 +2134,59 @@ The purpose of these parameters is to provide flexibility in the way the new obj
 
 ### #55 Constructor Overloading 
 
+```java
+class BankAccount {
+
+    // Attributes
+    String name;
+    int number;
+    double balance;
+
+    BankAccount(){
+        System.out.println("object initialized");
+    }
+
+    BankAccount(int balance){
+        this.balance = balance;
+    }
+
+    BankAccount(String name){
+        this.name = name;
+    }
+
+}
+```
+
+If a java class has has more than one constructor, each having either a different number of parameters or different types of parameters it is called Constructor Overloading. Any of these constructors can be used to create an object of this class. 
+
+```java
+public static void main(String[] args) {
+
+    // Using the default constructor
+    BankAccount account1 = new BankAccount();
+
+    // Using the parameterized constructor 1
+    BankAccount account2 = new BankAccount(100);
+
+    // Using the parameterized constructor 2
+    BankAccount account3 = new BankAccount("Campushire");
+
+}
+```
+
+For example, 
+
+- the object `account1` is created using the default constructor. 
+- the object `account2` is created using the first parameterized constructor which uses the balance parameter.
+- the object `account3` is created using the second parameterized constructor which uses the name parameter. 
+
+In case you are wondering why have so many ways of creating a new `BankAccount` object, it is to provide flexibility in initializing objects with various types of data.
+
+The key points to understand when overloading constructors is
+
+1. **Same Name** - All constructors have the same name, which is the class name.
+2. **Different parameters** - Each constructor has a different signature. Meaning, it should have a different number, type, or order of parameters
+
 
 ### #56 Default Constructor Overloading
 
@@ -2459,7 +2512,7 @@ int max = Math.max(1, 2);
 
 And that's why we are able to instantiate it directly using the class name itself. 
 
-### #58 Can we have Constructors with return type
+### #60 Can we have Constructors with return type
 
 ```java
 class Example {
@@ -2497,7 +2550,7 @@ void Example() {
 When you specify a return type, the constructor is deemed by Java as just another method - not a constructor. Just remember, constructors don't have a return type. Not even `void`. 
 
 
-### #60 Default Constructor in a Parent Class
+### #61 Default Constructor in a Parent Class
 
 ```java
 class Parent {
@@ -2583,7 +2636,353 @@ public class Test {
 
 The key point to understand is that when a child class` default constructor is called, Java automatically calls the default constructor of the parent class as well. 
 
-### #60 Constructor Delegation
+### #62 Constructor Delegation
+
+```java
+class Dog {
+    String name;
+
+    // Default Constructor
+    public Dog () {
+        // Delegating to the parameterized Constructor
+        this("Sunny");
+    }
+
+    // Constructor in Dog with name
+    public Dog(String name) {
+        this.name = name;
+    }
+}
+```
+
+In Question #57, we have seen "Constructor Chaining". When you call one constructor from another, we call it constructor chaining. This can be done within the class using the `this` keyword.
+
+
+```java
+class Animal {
+    String type;
+
+    public Animal(String type) {
+        this.type = type;
+    }
+}
+
+class Dog extends Animal {
+    String name;
+
+    // Constructor in Dog
+    public Dog(String name, String type) {
+
+        // Calls the constructor of Animal (superclass)
+        super(type); 
+        this.name = name;
+    }
+}
+
+```
+
+or you can call the super class' constructor using the `super` keyword. In general this concept is called `Constructor Chaining`. 
+
+```java
+class Dog {
+    String name;
+
+    // Default Constructor
+    public Dog () {
+        // Delegating to the parameterized Constructor
+        this("Sunny");
+    }
+
+    // Constructor in Dog with name
+    public Dog(String name) {
+        this.name = name;
+    }
+}
+```
+
+When you do `Constructor Chaining` specifically within the class using the `this` keyword, it is also called `Constructor Delegation`. For example, here, we have a `Dog` class which has a `name` parameter. We have 2 constructors. 
+
+```java
+// Default Constructor
+public Dog () {
+    // Delegating to the parameterized Constructor
+    this("Sunny");
+}
+```
+A default constructor which is called without any parameters. In case, the default constructor is called, we want the default dog name to be `Sunny`. 
+
+
+```java
+// Constructor in Dog with name
+public Dog(String name) {
+    this.name = name;
+}
+```
+
+Since we already have a parameterized constructor that can initialize the dog's name
+
+
+```java
+// Default Constructor
+public Dog () {
+    // Delegating to the parameterized Constructor
+    this("Sunny");
+}
+```
+we can call the parameterized constructor from the default constructor using the `this` keyword and pass the `name` value as a parameter.
+
+In case you are wondering why do this, Constructor delegation helps avoid repeating the same setup code in different constructors by allowing one constructor to call another.
+
+### #63 Can a constructor be final, static, or abstract
+
+```java
+class Test {
+
+    // Not Allowed
+    final Test(){
+
+    }
+
+    // Not allowed
+    static Test(){
+
+    }
+
+    // Not Allowed
+    abstract Test(){
+        
+    }
+}
+```
+
+No. None of these keywords are allowed for constructors in Java. Let's see why.
+
+```java
+class Test {
+
+    // Not Allowed
+    final Test(){
+
+    }
+
+}
+```
+
+Let's start with the first keyword - `final`. The `final` keyword is used to prevent a method from being overridden in subclasses. However, constructors are not inherited by subclasses, so the concept of a final constructor does not apply.
+
+
+```java
+class Test {
+
+    // Not allowed
+    static Test(){
+
+    }
+
+}
+```
+
+Next, we have the `static` keyword. A constructor sets up an object when it's created, while `static` things apply to the class as a whole, not to individual objects. Having a `static` constructor would be confusing because it would try to set up the class itself, which isn't the purpose of a constructor. So, `static` keyword is a no-no for constructors.
+
+
+```java
+class Test {
+
+    // Not allowed
+    abstract Test(){
+
+    }
+
+}
+```
+
+Finally, we have the `abstract` keyword. The `abstract` keyword means that a method or class must be completed by a subclass. However, constructors are for creating objects, and you can’t create objects of an abstract class. So, having an `abstract` constructor doesn’t make sense.
+
+In summary, a constructor can be neither `final` nor `static`, nor `abstract`.
+
+### #63 Can you inherit constructors
+
+```java
+class Parent {
+    String name;
+    String getName(){
+        return name;
+    }
+
+    public Parent() {
+
+    }
+
+    // Constructor in Parent
+    public Parent(String name) {
+        this.name = name;
+    }
+
+}
+
+class Child extends Parent {
+    int age;
+
+    // Constructor in Child
+    public Child(String name) {
+        this.age = age;
+    }
+
+}
+```
+
+When you inherit one class from another, we know that all 
+
+```java
+String name;
+```
+non-private instance variables and 
+
+```java
+String getName(){
+    return name;
+}
+```all non-private methods are inherited from the parent class to the child class. 
+
+```java
+public Parent() {
+
+}
+
+// Constructor in Parent
+public Parent(String name) {
+    this.name = name;
+}
+```
+
+But, what about constructors ? Are constructors inherited too ? No. Constructors are not inherited to the child class. Each class must define its own constructors.
+
+```java
+class Parent {
+    String name;
+
+    // Constructor in Parent
+    public Parent(String name) {
+        this.name = name;
+    }
+}
+
+class Child extends Parent {
+    int age;
+
+    // Constructor in Child
+    public Child(String name, int age) {
+
+        // Calls the constructor of Parent
+        super(name); 
+        this.age = age;
+    }
+}
+```
+
+However, you can call the constructor in the parent class from the child class using the `super` method. This is necessary to properly initialize the inherited fields from the superclass.
+
+In this example:
+
+- The `Child` class calls the `Parent` class's constructor using `super` keyword to set up the `name` field inherited from `Parent`.
+- The `Child` constructor initializes its own `age` field.
+
+### #64 4 pillars of OOPS
+
+1. `Encapsulation`
+2. `Inheritance`
+3. `Polymorphism`
+4. `Abstraction`
+
+These are the 4 pillars of OOPS. They are called "pillars" because they represent the fundamental principles upon which Object Oriented Programming is built.
+
+```java
+public class Person {
+    // Private field
+    private String name; 
+
+    // Public getter method
+    public String getName() {
+        return name;
+    }
+
+    // Public setter method
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+1. `Encapsulation` - First, we have `Encapsulstion`. By bundling data and methods together and controlling access to them, encapsulation ensures that an object’s internal state cannot be altered unpredictably. In the `Person` class, the `name` field is declared as `private`.  meaning it cannot be accessed directly from outside the Person class. This is a key aspect of encapsulation, which hides the internal state of the object from outside interference and misuse.
+
+```java
+public class Animal {
+    public void eat() {
+        System.out.println("This animal eats.");
+    }
+}
+
+public class Dog extends Animal {
+    public void bark() {
+        System.out.println("The dog barks.");
+    }
+}
+```
+
+2. `Inheritance` - Inheritance is the mechanism by which one class can inherit the properties and methods of another class. It promotes code reusability and establishes a natural hierarchy between classes.
+
+```java
+public class Animal {
+    public void makeSound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+public class Dog extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Dog barks");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Animal myDog = new Dog();
+
+        // Outputs: Dog barks
+        myDog.makeSound(); 
+    }
+}
+```
+
+3. `Polymorphism` - Polymorphism provides flexibility and the ability to perform a single action in different ways, depending on the context. 
+
+```java
+abstract class Shape {
+    abstract void draw(); // Abstract method, must be implemented by subclasses
+}
+
+class Circle extends Shape {
+    @Override
+    void draw() {
+        System.out.println("Drawing a circle");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Shape myShape = new Circle();
+        myShape.draw(); // Outputs: Drawing a circle
+    }
+}
+```
+
+4. `Abstraction` - Finally, `Abstraction` is the concept of hiding the complex implementation details of a system and exposing only the necessary and relevant parts
+
+
+
+
+
+
 
 
 
