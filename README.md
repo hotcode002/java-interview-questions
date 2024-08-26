@@ -2912,7 +2912,7 @@ public class Person {
     }
 }
 ```
-1. `Encapsulation` - First, we have `Encapsulstion`. By bundling data and methods together and controlling access to them, encapsulation ensures that an object’s internal state cannot be altered unpredictably. In the `Person` class, the `name` field is declared as `private`.  meaning it cannot be accessed directly from outside the Person class. This is a key aspect of encapsulation, which hides the internal state of the object from outside interference and misuse.
+1. `Encapsulation` - In the `Person` class, the `name` field is declared as `private`.  meaning it cannot be accessed directly from outside the Person class. This is a key aspect of encapsulation, which hides the internal state of the object from outside interference and misuse.
 
 ```java
 public class Animal {
@@ -2928,7 +2928,7 @@ public class Dog extends Animal {
 }
 ```
 
-2. `Inheritance` - Inheritance is the mechanism by which one class can inherit the properties and methods of another class. It promotes code reusability and establishes a natural hierarchy between classes.
+2. `Inheritance` - Inheritance is the mechanism by which one class can inherit the properties and methods of another class. In this code, the `Dog` class inherits the `eat()` method from the `Animal` class, meaning it can use that method without defining it again.
 
 ```java
 public class Animal {
@@ -2943,22 +2943,15 @@ public class Dog extends Animal {
         System.out.println("Dog barks");
     }
 }
-
-public class Test {
-    public static void main(String[] args) {
-        Animal myDog = new Dog();
-
-        // Outputs: Dog barks
-        myDog.makeSound(); 
-    }
-}
 ```
 
-3. `Polymorphism` - Polymorphism provides flexibility and the ability to perform a single action in different ways, depending on the context. 
+
+3. `Polymorphism` - Polymorphism provides flexibility and the ability to perform a single action in different ways, depending on the context. The `makeSound()` method in the Dog class overrides the method in the Animal class
 
 ```java
 abstract class Shape {
-    abstract void draw(); // Abstract method, must be implemented by subclasses
+    // Abstract method, must be implemented by subclasses
+    abstract void draw(); 
 }
 
 class Circle extends Shape {
@@ -2967,22 +2960,94 @@ class Circle extends Shape {
         System.out.println("Drawing a circle");
     }
 }
+```
 
-public class Test {
-    public static void main(String[] args) {
-        Shape myShape = new Circle();
-        myShape.draw(); // Outputs: Drawing a circle
+4. `Abstraction` - Finally, `Abstraction` is the concept of hiding the complex implementation details of a system and exposing only the necessary and relevant parts. Here, the `Shape` class defines an abstract method `draw()`, without providing its implementation. The `Circle` class provides the specific implementation of `draw()` method.
+
+### #65 What is Encapsulation
+
+```java
+public class Person {
+     
+    // Private variables to restrict direct access
+    private String name;
+    private int age;
+
+    // Public getter method to access the name
+    public String getName() {
+        return name;
+    }
+
+    // Public setter method to modify the name
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Public getter method to access the age
+    public int getAge() {
+        return age;
+    }
+
+    // Public setter method to modify the age
+    public void setAge(int age) {
+        this.age = age;
     }
 }
 ```
 
-4. `Abstraction` - Finally, `Abstraction` is the concept of hiding the complex implementation details of a system and exposing only the necessary and relevant parts
+Encapsulation in Java is the concept of wrapping data or variables and methods into a single unit called a class. This is achieved using 3 things.
+
+```java
+// Private variables to restrict direct access
+private String name;
+private int age;
+```
+1. **Data Hiding** : This is done by declaring variables as private. For example, in this class, the `name` and `age` variables are private. Think of them as the internal state of the object. They can't be accessed directly from outside the `Person` class. This is Data Hiding.
+
+```java
+// Public getter method to access the name
+public String getName() {
+    return name;
+}
+
+// Public setter method to modify the name
+public void setName(String name) {
+    this.name = name;
+}
+
+// Public getter method to access the age
+public int getAge() {
+    return age;
+}
+
+// Public setter method to modify the age
+public void setAge(int age) {
+    if (age > 0) { // Validation to ensure age is positive
+        this.age = age;
+    } else {
+        System.out.println("Age must be positive.");
+    }
+}
+```
+
+2. **Controlled Access** : Public getter and setter methods are used to access and update the private variables. The methods `getName()`, `setName()`, `getAge()`, and `setAge()` are public methods that allow controlled access to the private variables. This means you can read and modify the data in a controlled manner. This is Controlled Acccess.
 
 
 
 
+```java
+// Public setter method to modify the age
+public void setAge(int age) {
+    if (age > 0) { // Validation to ensure age is positive
+        this.age = age;
+    } else {
+        System.out.println("Age must be positive.");
+    }
+}
+```
 
 
+3. **Improved Maintenance** : By hiding the internal implementation details, encapsulation makes the code more maintainable and flexible. The `setAge()` method includes a validation check to ensure that the `age` is positive. Outside of the class, nobody needs to know the implementation details of this method. 
 
 
 
