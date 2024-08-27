@@ -2,6 +2,8 @@
 Java Interview Questions
 
 
+
+
 1. [# 21 - What is a Local Variable in Java](#what-is-a-local-variable)
 1. [# 22 - What are Instance Variables in Java](#what-are-instance-variables)
 1. [# 23 - What are Static Variables in Java](#what-are-static-variables)
