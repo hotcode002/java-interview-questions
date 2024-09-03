@@ -3052,6 +3052,332 @@ public void setAge(int age) {
 3. **Improved Maintenance** : By hiding the internal implementation details, encapsulation makes the code more maintainable and flexible. The `setAge()` method includes a validation check to ensure that the `age` is positive. Outside of the class, nobody needs to know the implementation details of this method. 
 
 
+### #66 What is Inheritance
+
+
+
++------------------+
+|     Animal       |
++------------------+
+| - name: String   |
++------------------+
+| + makeSound()    |
++------------------+
+        ^
+        |
+        |
++------------------+
+|       Dog        |
++------------------+
+| - name : String  | <- inherited from parent class
++------------------+
+| + makeSound()    | <- inherited from the parent class
++------------------+
+
+Inheritance in Java is a mechanism that allows one class to inherit the fields and methods of another class. It basically creates a parent-child relationship between classes. Here `Animal` is the parent class and `Dog` is the child class which inherits properties and methods from the `Animal` class.
+
+```java
+// Base class
+public class Animal {
+    // Field
+    String name;
+
+    // Constructor
+    public Animal(String name) {
+        this.name = name;
+    }
+
+    // Method
+    public void makeSound() {
+        System.out.println("Some generic animal sound");
+    }
+}
+```
+
+Let's create the base or parent class called `Animal`. It has a field `name`, and a method `makeSound`(). 
+
+```java
+// Derived class
+public class Dog extends Animal {
+
+    // `name` field is inherited from the Animal class
+
+    // `makeSound` method is also inherited
+
+    // Constructor
+    public Dog(String name) {
+        // Call the constructor of the base class
+        super(name); 
+    }
+
+}
+```
+
+We have a derived or child class called `Dog`, which  extends the `Animal` class, inheriting its fields and methods. For example, the `name` field and the `makeSound` method is inherited from the parent class.
+
+
+```java
+// Overriding the method from the base class
+@Override
+public void makeSound() {
+    System.out.println("Bark");
+}
+```
+The child class is ofcourse free to override any methods from the parent class. For example, if you add the same makeSound method to the child class, the inherited method from the child class is overridden. The `@Override` annotation is optional. As long as the method class in the parent and child class match, the child class' method automatically overrides the parent class's implementation. 
+
+```java
+
+// New method specific to Dog
+public void fetch() {
+    System.out.println("Fetching the ball...");
+}
+```
+
+The child class is ofcourse not limited to the methods inherited from the parent class. For example, you can add a new method, `fetch()`, which is specific to the `Dog` class.
+
+### #67 What is Compile time Polymorphism
+
++--------------------------+
+|      Calculator          |      <--- Class
++--------------------------+
+| - add(int a, int b)      |      <--- Overloaded Method 1
+| - add(double a, double b)|      <--- Overloaded Method 2
++--------------------------+
+            |
+    -----------------
+    |               |
++------------+     +----------------+
+| add(5, 10) |     | add(5.0, 10.0) |
++------------+     +----------------+
+      |               |
+    Output: 15     Output: 15.0     <--- Different behavior based on argument types
+
+
+Compile-time Polymorphism is also called `method overloading`. 
+
+The Calculator class has two overloaded methods called `add()`, but they have different parameters - one for integers and one for doubles. When you call `add(5, 10)`, it chooses the version that takes `int` parameters, and for `add(5.0, 10.0)`, it uses the version that accepts `double` parameters. This is resolved at compile time because the compiler determines which method to invoke based on the method signatures and argument types.
+
+```java
+class Calculator {
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public double add(double a, double b) {
+        return a + b;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        System.out.println(calc.add(5, 10));  // Calls int version
+        System.out.println(calc.add(5.0, 10.0));  // Calls double version
+    }
+}
+```
+
+Let's see an this in java.
+
+```java
+public int add(int a, int b) {
+    return a + b;
+}
+
+public double add(double a, double b) {
+    return a + b;
+}
+```
+
+We have 2 `add()` methods. The first one takes `int` parameters and the second one takes `double` parameters. 
+
+```java
+
+// Calls int version
+System.out.println(calc.add(5, 10));  
+
+// Calls double version
+System.out.println(calc.add(5.0, 10.0));  
+```
+
+When we call the `add()` method with integers it calls the `int` version and when we call the add method with `double` data types, it calls the `double` version of the add class. 
+
+In summary, `Method Overloading` or `Compile Time polymorphism` happens when multiple methods have the same name but different parameters like type, number, or both in the same class.
+
+### #68 What is Run-time Polymorphism
+
+Run-time Polymorphism is also called `Method Overeriding`. 
+
+        +-------------------+
+        |     Animal        |        <--- Base Class (Parent)
+        +-------------------+
+        | - makeSound()     |        <--- General Method (Parent's behavior)
+        +-------------------+
+                  |
+        -------------------------
+        |                       |
++-------------------+   +-------------------+
+|       Dog         |   |       Cat         |     <--- Derived Classes (Children)
++-------------------+   +-------------------+
+| - makeSound()     |   | - makeSound()     |     <--- Overridden Method
++-------------------+   +-------------------+
+        |                       |
+     Bark!                  Meow!            <--- Different Behaviors (Polymorphism in action)
+
+The `Animal` class is the parent class, and it has a method called `makeSound()`. The `Dog` and `Cat` classes inherit from `Animal` and override the `makeSound()` method, each providing their own implementation (Bark! for Dog and Meow! for Cat). This is called run-time polymorphism where the behavior depends on the actual object - `Dog` or `Cat` - that calls the method. Let's see this in Java.
+
+```java
+class Animal {
+    public void makeSound() {
+        System.out.println("Some generic animal sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Bark");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+
+        // Reference of type Animal, but actual object is Dog
+        Animal myDog = new Dog();  
+
+        // Output: "Bark"
+        myDog.makeSound();  
+    }
+}
+```
+
+Here, the reference type is `Animal`, but the actual object is of type `Dog`. During runtime, Java determines that the Dog's version of `makeSound()` should be called. That's why the output is `Bark` instead of `Meow`.
+
+In summary, Method Overriding or run-time polymorphism occurs when a subclass provides a specific implementation of a method that is already defined in its superclass. At runtime, the actual method is chosen depending on the object calling it. 
+
+
+### #69 What is Abstraction with Abstract Classes
+
+There are two ways to achieve abstraction in Java. 
+
+- Abstract Classes
+- Interfaces
+
+In this video, we will use Abstract Classes. In the next video, we will use Interfaces. 
+
+```java
+abstract class Vehicle {
+    // Abstract method (no implementation)
+    abstract void move();
+}
+```
+
+Abstraction in Java is the process of hiding the implementation details of a system and only exposing the essential features or functionalities to the user. For example, here is an abstract class called `Vehicle`. It has an abstract method called `move()` which does not have an implementation. 
+
+```java
+class Car extends Vehicle {
+    // Implementing the abstract method
+    @Override
+    void move() {
+        System.out.println("Car is moving...");
+    }
+}
+```
+
+If you want to use the `Vehicle` abstract class, extend it into another class say `Car` and implement the abstract methods in it. 
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        Vehicle myCar = new Car();  // Can refer to abstract class, but instantiate subclass
+        myCar.move();               // Output: Car is moving...
+    }
+}
+```
+
+You can now instantiate the `Car` class and call the `move()` method. 
+
+```java
+abstract class Vehicle {
+    // Abstract method (no implementation)
+    abstract void move();
+}
+```
+
+In summary, Abstract classes are used when you want to define a common template for its subclasses, leaving some methods to be implemented by those subclasses. Here the `Vehicle` class defines the common template for all subclasses that inherit it. Subclasses like `Car` or `Van` do the actual implementation. 
+
+### #70 What is Abstraction with Interfaces
+
+In #69, we have seen how to achieve Abstraction with Abstract classes. In this video, we will see it with Interfaces. 
+
+
+```java
+interface Animal {
+    void makeSound();  // Abstract method
+}
+```
+
+An interface is a reference type in Java that can contain only `method signatures` or `abstract methods`. It does not have any implementation details. For example, this interface `Animal` has a method signature - `makeSound`. But it does not have the implementation details. 
+
+```java
+class Dog implements Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Bark");
+    }
+}
+```
+To be able to actually use this `Animal` interface, implement it in a class using the `implements` keyword and provide an implementation for all the signature methods in the interface. 
+
+In summary, you can use Interfaces in Java provide to achieve abstraction. The implementation details are left to the concrete classes, making the interface itself purely abstract.
+
+### #71 Inheritance vs Polymorphism
+
+These are 2 out of the 4 pillars of Object Oriented Programming. We have discussed Inheritance in #66 and Polymorphism in #67 and #68. In this question, we will understand the differences between Inheritance and Polymorphism, specifically run-time polymorphism. 
+
+            +-------------------+
+            |     Animal        |        <--- Base Class (Parent)
+            +-------------------+
+            |  + makeSound()    |        <--- Common Method
+            +-------------------+
+                  |
+        -------------------------
+        |                       |
++-------------------+     +-------------------+
+|       Dog         |     |       Cat         |     <--- Derived Classes (Children)
++-------------------+     +-------------------+
+|  - makeSound()    |     |  - makeSound()    |     <--- Inherits from Animal class
++-------------------+     +-------------------+
+
+Say we have a parent class `Animal` which has the `makeSound()` method. When the child classes - `Dog` and `Cat` extend the parent class `Animal`, they automatically inherit the `makeSound()` method. This act of inheriting variables and methods from the parent class is called inheritance. 
+
+        +-------------------+
+        |     Animal        |        <--- Base Class (Parent)
+        +-------------------+
+        | - makeSound()     |        <--- General Method (Parent's behavior)
+        +-------------------+
+                  |
+        -------------------------
+        |                       |
++-------------------+   +-------------------+
+|       Dog         |   |       Cat         |     <--- Derived Classes (Children)
++-------------------+   +-------------------+
+| - makeSound()     |   | - makeSound()     |     <--- Overridden Method
++-------------------+   +-------------------+
+        |                       |
+     Bark!                  Meow!            <--- Different Behaviors (Polymorphism in action)
+
+Let's see polymorphism now. Let's take the same `Animal` class and say it has a `makeSound()` method. When the `Dog` and `Cat` classes inherit from this class, they automatically inherit the `makeSound()` method. However, the child classes can override the inherited `makeSound()` method by defining their own implementations - For example, the `Dog` class makes a sound of Bark and the `Cat` class makes a sound of Meow. The fact that child classes can override the inherited behaviours by defining their own behaviours is called Polymorphism.
+
+
+
+
+
+
+
+
+
 
 
 
