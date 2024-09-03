@@ -3355,7 +3355,7 @@ Say we have a parent class `Animal` which has the `makeSound()` method. When the
         +-------------------+
         |     Animal        |        <--- Base Class (Parent)
         +-------------------+
-        | - makeSound()     |        <--- General Method (Parent's behavior)
+        | + makeSound()     |        <--- General Method (Parent's behavior)
         +-------------------+
                   |
         -------------------------
