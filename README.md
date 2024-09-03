@@ -2514,7 +2514,7 @@ int max = Math.max(1, 2);
 
 And that's why we are able to instantiate it directly using the class name itself. 
 
-### #60 Can we have Constructors with return type
+### #60 Can Constructors have a return type
 
 ```java
 class Example {
@@ -2802,7 +2802,7 @@ Finally, we have the `abstract` keyword. The `abstract` keyword means that a met
 
 In summary, a constructor can be neither `final` nor `static`, nor `abstract`.
 
-### #63 Can you inherit constructors
+### #64 Can you inherit constructors
 
 ```java
 class Parent {
@@ -2889,7 +2889,7 @@ In this example:
 - The `Child` class calls the `Parent` class's constructor using `super` keyword to set up the `name` field inherited from `Parent`.
 - The `Child` constructor initializes its own `age` field.
 
-### #64 4 pillars of OOPS
+### #65 4 pillars of OOPS
 
 1. `Encapsulation`
 2. `Inheritance`
