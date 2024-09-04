@@ -2966,7 +2966,7 @@ class Circle extends Shape {
 
 4. `Abstraction` - Finally, `Abstraction` is the concept of hiding the complex implementation details of a system and exposing only the necessary and relevant parts. Here, the `Shape` class defines an abstract method `draw()`, without providing its implementation. The `Circle` class provides the specific implementation of `draw()` method.
 
-### #65 What is Encapsulation
+### #66 What is Encapsulation
 
 ```java
 public class Person {
@@ -2997,7 +2997,7 @@ public class Person {
 }
 ```
 
-Encapsulation in Java is the concept of wrapping data or variables and methods into a single unit called a class. This is achieved using 3 things.
+Encapsulation in Java is the concept of wrapping data or variables and methods into a single unit called a class. This is achieved using 2 things.
 
 ```java
 // Private variables to restrict direct access
@@ -3049,10 +3049,7 @@ public void setAge(int age) {
 ```
 
 
-3. **Improved Maintenance** : By hiding the internal implementation details, encapsulation makes the code more maintainable and flexible. The `setAge()` method includes a validation check to ensure that the `age` is positive. Outside of the class, nobody needs to know the implementation details of this method. 
-
-
-### #66 What is Inheritance
+### #67 What is Inheritance
 
 
 
@@ -3123,7 +3120,7 @@ public void makeSound() {
     System.out.println("Bark");
 }
 ```
-The child class is ofcourse free to override any methods from the parent class. For example, if you add the same makeSound method to the child class, the inherited method from the child class is overridden. The `@Override` annotation is optional. As long as the method class in the parent and child class match, the child class' method automatically overrides the parent class's implementation. 
+The child class is ofcourse free to override any methods from the parent class. For example, if you add the same makeSound method to the child class, the inherited method from the parent class is overridden. The `@Override` annotation is optional. As long as the method class in the parent and child class match, the child class' method automatically overrides the parent class's implementation. 
 
 ```java
 
@@ -3135,7 +3132,7 @@ public void fetch() {
 
 The child class is ofcourse not limited to the methods inherited from the parent class. For example, you can add a new method, `fetch()`, which is specific to the `Dog` class.
 
-### #67 What is Compile time Polymorphism
+### #68 What is Compile time Polymorphism
 
 +--------------------------+
 |      Calculator          |      <--- Class
@@ -3204,7 +3201,7 @@ When we call the `add()` method with integers it calls the `int` version and whe
 
 In summary, `Method Overloading` or `Compile Time polymorphism` happens when multiple methods have the same name but different parameters like type, number, or both in the same class.
 
-### #68 What is Run-time Polymorphism
+### #69 What is Run-time Polymorphism
 
 Run-time Polymorphism is also called `Method Overeriding`. 
 
@@ -3257,7 +3254,7 @@ Here, the reference type is `Animal`, but the actual object is of type `Dog`. Du
 In summary, Method Overriding or run-time polymorphism occurs when a subclass provides a specific implementation of a method that is already defined in its superclass. At runtime, the actual method is chosen depending on the object calling it. 
 
 
-### #69 What is Abstraction with Abstract Classes
+### #70 What is Abstraction with Abstract Classes
 
 There are two ways to achieve abstraction in Java. 
 
@@ -3307,7 +3304,7 @@ abstract class Vehicle {
 
 In summary, Abstract classes are used when you want to define a common template for its subclasses, leaving some methods to be implemented by those subclasses. Here the `Vehicle` class defines the common template for all subclasses that inherit it. Subclasses like `Car` or `Van` do the actual implementation. 
 
-### #70 What is Abstraction with Interfaces
+### #71 What is Abstraction with Interfaces
 
 In #69, we have seen how to achieve Abstraction with Abstract classes. In this video, we will see it with Interfaces. 
 
@@ -3332,7 +3329,7 @@ To be able to actually use this `Animal` interface, implement it in a class usin
 
 In summary, you can use Interfaces in Java provide to achieve abstraction. The implementation details are left to the concrete classes, making the interface itself purely abstract.
 
-### #71 Inheritance vs Polymorphism
+### #72 Inheritance vs Polymorphism
 
 These are 2 out of the 4 pillars of Object Oriented Programming. We have discussed Inheritance in #66 and Polymorphism in #67 and #68. In this question, we will understand the differences between Inheritance and Polymorphism, specifically run-time polymorphism. 
 
