@@ -3368,7 +3368,187 @@ Say we have a parent class `Animal` which has the `makeSound()` method. When the
 Let's see polymorphism now. Let's take the same `Animal` class and say it has a `makeSound()` method. When the `Dog` and `Cat` classes inherit from this class, they automatically inherit the `makeSound()` method. However, the child classes can override the inherited `makeSound()` method by defining their own implementations - For example, the `Dog` class makes a sound of Bark and the `Cat` class makes a sound of Meow. The fact that child classes can override the inherited behaviours by defining their own behaviours is called Polymorphism.
 
 
+### #73 Abstraction vs Encapsulation
 
+Abstraction and Encapsulation are two of the pillars of Object Oriented Programming, but they serve different purposes.
+
+```java
+abstract class Animal {
+    abstract void sound(); // Abstract method
+}
+```
+
+Let's talk about Abstraction first. Abstraction is the process of hiding complex implementation details and showing only the necessary features of an object. It focuses on what an object does rather than how it does it. For example, the `Animal` class here is declared as `abstract`. This means you cannot create an object of `Animal` directly. The method `sound()` is declared as `abstract` in the `Animal` class.
+
+```java
+class Dog extends Animal {
+    void sound() {
+        System.out.println("Barks");
+    }
+}
+```
+
+The `Dog` class extends the `Animal` class and provides the actual implementation of the `sound()` method. 
+
+```java
+abstract class Animal {
+    // Private variable - not accessible outside this class
+    private String name; 
+    
+    // Constructor to initialize name
+    public Animal(String name) {
+        this.name = name;
+    }
+    
+    // Public getter method to access the private variable
+    public String getName() {
+        return name;
+    }
+
+    // Public setter method to modify the private variable
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Abstract method - still for abstraction
+    abstract void sound();
+}
+```
+
+Next let's talk about Encapsulation. Encapsulation is about restricting direct access to an object's data and allowing controlled access. This is achieved through two things. 
+
+1. Private Data - the `name` field is private. This is a key principle of encapsulation: hiding the internal state.
+2. Getter and Setter Methods - The getter and setter methods act as controlled access points to the private data.
+
+
+### #74 Is Multiple Inheritance allowed
+
+
+      Animal
+        /\
+       /  \
+   Mammal  Bird
+     \      /
+      \    /
+       \  /
+       Dog
+
+
+Java does support multiple inheritance but not with classes. To understand why, we have to understand the `Diamond Problem`. 
+
+Here `Animal` is the base class and both the `Mammal` and `Bird` classes inherit from the `Animal` class. `Dog` inherits from both `Mammal` and `Bird`.
+
+       Animal
+      /      \
+     /        \
+makeSound()  makeSound() 
+   /             \
+  /               \
+Mammal           Bird
+  \               /
+   \             /
+    \           /
+     \         /
+      \       / 
+         Dog
+     makeSound()
+
+In the `Dog` class, it becomes ambiguous which `makeSound()` method `Dog` should use, as both `Mammal` and `Bird` are contributing their own versions of `makeSound()`. This is why multiple inheritance is not allowed in Java with classes. 
+
+```java
+// Define the interfaces
+interface Animal {
+    void makeSound();
+}
+
+interface Mammal extends Animal {
+    // Inherits makeSound() from Animal
+}
+
+interface Bird extends Animal {
+    // Inherits makeSound() from Animal
+}
+
+// Implementing the interfaces in a class
+class Dog implements Mammal, Bird {
+    @Override
+    public void makeSound() {
+        System.out.println("Dog sound");
+    }
+}
+```
+
+However, Java supports multiple inheritance with interfaces. Instead of declaring `Animal`, `Mammal` and `Bird` as classes, use interfaces. Since there are no implementations of the methods either in the `Mammal` or `Bird` class, we can happily implement both the interfaces in the `Dog` class and override the implementation in the `Dog` class without any fear of the `Diamond problem`. 
+
+### #75 Default methods in an Interface
+
+```java
+public interface Animal {
+
+    // Default method
+    default void makeSound() {
+        System.out.println("Some generic animal sound");
+    }
+    
+    // Abstract method
+    void eat();
+
+}
+```
+Starting with Java 8, an Interface can have default methods. Use the `default` keyword to declare a default method. 
+
+```java
+public class Dog implements Animal {
+
+    // Optionally override the default method
+    @Override
+    public void makeSound() {
+        System.out.println("Woof Woof");
+    }
+
+}
+```
+
+The Dog class implements the Animal class. It gets the default implementation of the makeSound() method by default. However, you can override it and provide your own implementation of the makeSound() class in the Dog class. 
+
+One of the main uses of default methods in Interfaces is Backwards compatibility. Let'see this with an example. 
+
+            +-----------------+
+            |    Animal       |   <--- Interface
+            |-----------------|
+            |     + eat()     |   <--- Abstract Method
+            +-----------------+
+                    ^
+                    |
+      +-------------+-------------+
+      |             |             |
++-----------+   +-----------+   +-----------+
+|    Dog    |   |    Cat    |   |   Tiger   |  <--- Subclasses
+|-----------|   |-----------|   |-----------|
+| + eat()   |   | + eat()   |   | + eat()   |
++-----------+   +-----------+   +-----------+
+
+Say you have an `Animal` Interface with an abstract `eat()` method. There are 3 subclasses that implement the `Animal` interface. Each of these subclasses are forced to provide an implemention of the the `eat()` method. So far so good. 
+
+            +-----------------+
+            |    Animal       |   <--- Interface
+            |-----------------|
+            |     + eat()     |   <--- Abstract Method
+            |     + drink()   |   <--- New Abstract Method added
+            +-----------------+
+                    ^
+                    |
+      +-------------+-------------+
+      |             |             |
++-----------+   +-----------+   +-----------+
+|    Dog    |   |    Cat    |   |   Tiger   |  <--- Subclasses
+|-----------|   |-----------|   |-----------|
+| + eat()   |   | + eat()   |   | + eat()   |
++-----------+   +-----------+   +-----------+
+
+Now, what happens when you add a new method ? say `drink()` ? All the subclasses are now forced to implement the `drink()` method. This means that all the classes that implement the `Animal` interface need to be changed. 
+
+To avoid this, Java 8 onwards, Interfaces can have `default` methods that need not be implemented by subclasses. If you want, you can override though. 
 
 
 
