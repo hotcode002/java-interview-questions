@@ -1,14 +1,17 @@
 class Account {
-    private int number;
+    public int number;
 }
 
 class CurrentAccount extends Account {
-    private int accNumber = number;
+    // This class has access to `number` variable
+   
 }
 
 class Main {
 
     public static void main (String[] args){
         CurrentAccount account = new CurrentAccount();
+        account.number = 1;
+        System.out.println(account.number);
     }
 }

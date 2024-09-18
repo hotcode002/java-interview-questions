@@ -3809,6 +3809,84 @@ The primary purpose of private variables or methods is Encapsulation, which is o
 
 ### #80 What is a public Access Modifier
 
+We have seen the `private` access modifier in #79. In this video, we are going to look at the `public` access modifier. 
+
+```java
+class Account {
+    public int number;
+}
+```
+
+```java
+class Main {
+
+    public static void main (String[] args){
+        Account account = new Account();
+        account.number = 1;
+    }
+}
+```
+When you declare a variable as `public`, it is not just accessible within the class, but from outside the class as well.
+
+```java
+account.number = 1;
+```
+
+If the variable number were a `private` variable, we would not be able to access it like this. Since the variable number is `public`, we can access it directly using the `.` operator. This applies not just to variables but to methods as well. 
+
++----------------------+
+|       Class Account  |
+| +------------------+ |
+| |   public  field  | |
+| +------------------+ |
+| +------------------+ |
+| |  public  method()| |
+| +------------------+ |
++----------------------+
+           |
+           |
+           v
++----------------------+
+| Class CurrentAccount |
+|                      |
+| Automatically gets   |
+| access to all public |
+| fields and methods   |
+| of the parent class  |
++----------------------+
+
+Now, what about inheritance ? variables and methods declared as `public` automatically get passed on to the child classes as well. 
+
+```java
+class Account {
+    public int number;
+}
+
+class CurrentAccount extends Account {
+    // This class has access to `number` variable
+
+}
+```
+
+For example, the `number` field declared as public in the parent class automatically gets inherited by the child class.
+
+```java
+class Main {
+
+    public static void main (String[] args){
+        CurrentAccount account = new CurrentAccount();
+        account.number = 1;
+        System.out.println(account.number);
+    }
+}
+```
+
+Also, since the variable is declared as `public`, the child class can just use the `.` operator to access the field. 
+
+
+
+
+
 
 
 ### #81 What is a protected Access Modifier
