@@ -3550,18 +3550,274 @@ Now, what happens when you add a new method ? say `drink()` ? All the subclasses
 
 To avoid this, Java 8 onwards, Interfaces can have `default` methods that need not be implemented by subclasses. If you want, you can override though. 
 
+### #76 Interfaces vs Abstract Classes
+
+```java
+
+public interface Animal {
+
+    // Abstract method
+    void eat();
+
+    // Abstract method
+    void makeSound();
+}
+```
+
+Interfaces are purely Abstract. They only contain the method declarations - atleast prior to Java 8. Basically, it represents a contract that the implementing classes should implement.
+
+
+```java
+public abstract Animal {
+
+    // Abstract Method
+    abstract void eat();
+
+    // Concrete Method
+    void makeSound() {
+        System.out.println("Make Sound");
+    }
+}
+```
+
+Abstract classes on the other hand, can have both abstract and concrete methods. 
+
+```java
+    // Abstract Method
+    abstract void eat();
+```
+
+All abstract methods should be declared as `abstract`. 
+
+|          Feature          | Abstract Class       | Interface                  |
++---------------------------+----------------------+----------------------------+
+| 1. Constructors           |        Yes           |          No                |
++---------------------------+----------------------+----------------------------+
+| 2. Access Modifiers       |   Private, Public or |   Only public              |
+|                           |      Protected       |                            |
++---------------------------+----------------------+----------------------------+
+| 3. Inheritance            |  Single (extends     |  Multiple (implements      |
+|                           |  one class)          |  multiple interfaces)      |
++---------------------------+----------------------+----------------------------+
+
+
+There are some other differences between abstract classes and interfaces, but most importantly, we have to understand the purpose of each.
+
+              Abstract Class: Vehicle
+              +-------------------------+
+              |      startEngine()      |   <-- Default behavior
+              +-------------------------+
+                        |
+   +--------------------+---------------------+
+   |                                          |
+  Car                                        Truck
++------------------+                    +------------------+
+| specificFeatures()|                    | specificFeatures()|
++------------------+                    +------------------+
+
+An abstract class can provide default behavior, for subclasses that share the common functionality but may also have their own specific features.
+
+
+                Interface: Flyable
+              +-------------------------+
+              |         fly()            |   <-- Defined contract
+              +-------------------------+
+                        |
+   +--------------------+---------------------+
+   |                                          |
+Implements:                                Implements:
+Bird                                       Airplane
++------------------+                    +------------------+
+|   fly() method   |                    |   fly() method   |
+|  (implemented)   |                    |  (implemented)   |
++------------------+                    +------------------+
+
+An interface on ther other hand can define methods that must be implemented by unrelated classes, essentially forcing them to implement a common set of functionality. 
+
+### #77 Default Access Modifiers in an Interface
+
+```java
+interface Flyable {
+    // This variable is implicitly public, 
+    // static, and final (a constant)
+    int MAX_ALTITUDE = 10000;
+}
+```
+Variables are implicitly public, static, and final. This means all variables are constants and cannot be modified after initialization.
+
+```java
+interface Flyable {
+
+    // Compile time error. 
+    int MAX_ALTITUDE;
+}
+```
+For example, if you try to declare a variable without initializing it results in compile time error.
+
+```java
+interface Flyable {
+    // This method is implicitly 
+    // public and abstract
+    void fly();
+}
+```
+
+On the other hand, Methods in an interface are implicitly public and abstract. There are some exceptions to this though. 
+
+1. `default` methods - This was introduced in Java 8. Know more about these in # 75
+
+
+```java
+interface Flyable {
+    // private methods should have a body
+    private void fly(){
+        System.out.println("Fly");
+    }
+}
+```
+
+2. `private` methods - Starting with Java 9, Interfaces can have private methods. However, make sure they have a body. 
+
+```java
+interface MathUtils {
+    // Static method in the interface
+    static int add(int a, int b) {
+        return a + b;
+    }
+}
+```
+
+3. `static` methods - Starting with Java 8, Interfaces can also have static methods. This is typically used as utility methods. For example, A Collection interface might have a static method to perform common operations that are not specific to any single instance.
+
+### #78 Can one interface extend another
+
+```java
+// Parent interface
+interface Animal {
+    void eat();
+}
+
+// Child interface extending 
+// the parent interface
+interface Cat extends Animal {
+    void play();
+}
+```
+
+Yes, in Java, an interface can extend another interface. Here, we have 2 interfaces
+
+1. `Animal` which has an abstract `eat()` method.
+2. We have another interface `Cat` that `extends` the `Animal` Interface. 
+
+The `Cat` interface inherits the `eat()` method and it adds its own abstract method `play()`.
+
+Observe that when you extend one interface from another, we use the `extends` keyword, not the `implements` keyword. 
+
+
+      +---------+
+      | Animal  |
+      +---------+
+         ^  ^
+         |  |------------------
+         |                     |
+  +-------------+      +-------------+
+  |    Feline   |      |   Canine    |
+  +-------------+      +-------------+
+         ^                  ^
+         |                  |
+         |                  |
+  +----------------+    +-----------------+
+  |       Cat      |    |     Dog         |
+  +----------------+    +-----------------+
+         ^
+         |
+         |
++---------------------+
+| CatImplementation   |
++---------------------+
+
+
+In case you are wondering why do this, this is generally done so that our code is more flexible and reusable. For example, there are two interfaces here `Feline` and `Canine` that are inheriting from the `Animal` interface. The Cat interface now implements from both the Feline and the Animal Interface. This way, the `Cat` interface inherits from both the `Feline` and the `Animal` Interfaces inhering both the characteristics. 
+
+
+### #79 What is a private Access Modifier
+
+```java
+class Account {
+    private int number;
+}
+```
+
+When you declare a variable or method as private, it is only accessible from within the class.
+
+```java
+class Main {
+
+    public static void main (String[] args){
+        Account account = new Account();
+        account.number = 1;
+    }
+}
+```
+If you try to access the private variable within another class, it results in an error. 
+
+```java
+class Account {
+    private int number;
+}
+
+class CurrentAccount extends Account {
+    // No access to the `number` private variable
+    private int accNumber = number;
+}
+```
+
+Similarly, you can't access private variables even in the child class.
+
++----------------------+
+|       Class Account  |
+| +------------------+ |
+| |   private field  | |
+| +------------------+ |
+| +------------------+ |
+| |  private method()| |
+| +------------------+ |
++----------------------+
+           |
+           |
+           v
++----------------------+
+| Class CurrentAccount |
++----------------------+
+
+When the child class inherits from the parent class, all the fields and methods marked as private will not be inherited to the child class. 
+
+```java
+class Account {
+    private int number;
+
+    public getNumber(){
+        return number;
+    }
+}
+```
+
+The only way to access a private variable is to have a public getter method. 
+
+The primary purpose of private variables or methods is Encapsulation, which is one of the core principles of Object oriented programming. To understand more about Encapsultion, refer to #66. 
+
+
+### #80 What is a public Access Modifier
+
+
+
+### #81 What is a protected Access Modifier
 
 
 
 
 
-
-
-
-
-
-
-
+### #82 What is the default Access Modifier
 
 
 
