@@ -3848,11 +3848,12 @@ If the variable number were a `private` variable, we would not be able to access
            v
 +----------------------+
 | Class CurrentAccount |
-|                      |
-| Automatically gets   |
-| access to all public |
-| fields and methods   |
-| of the parent class  |
+| +------------------+ |
+| |   public  field  | |  < -- Automatically gets access
+| +------------------+ |
+| +------------------+ |
+| |  public  method()| |  < -- Automatically gets access
+| +------------------+ |
 +----------------------+
 
 Now, what about inheritance ? variables and methods declared as `public` automatically get passed on to the child classes as well. 
@@ -3883,19 +3884,178 @@ class Main {
 
 Also, since the variable is declared as `public`, the child class can just use the `.` operator to access the field. 
 
+### #81 Default Access Modifier
+
+We have seen `private` and `public` access modifiers in #79 and #80. 
+
+```java
+class Account {
+    int number;
+}
+
+class CurrentAccount extends Account {
+    // Does this class have access
+    // to the `number` variable ??
+
+}
+```
+
+But, What if you just say `int number` without saying explicitly that it is `private` or `public`. 
+
+```java
+class Account {
+
+    // This is package-private
+    int number; 
+}
+```
+
+In this case, the access level is called `package-private`. 
+
+```java
+class Account {
+
+    // This is package-private
+    int number;
+}
+
+/** Another class in the same package */
+class Main {
+
+    public static void main (String[] args){
+        Account account = new Account();
+        account.number = 1;
+        System.out.println(account.number);
+    }
+}
+```
+Any other class within the same package can access these `package-private` variables. The key being **within the same package**. In other words, within the same package, `package-private` acts like the `public` access modifer. 
+
+```java
+class Account {
+
+    // package-private by default
+    int number;
+}
+
+/** Another class in the same package */
+class CurrentAccount extends Account {
+    // This class has access to `number` variable
+   
+}
+```
+
+The next question you might have is, what about sub-classes ? As long as the sub-class is within the same package, you inherit the `package-private` variables and methods. 
+
+```java
+class Account {
+
+    // package-private by default
+    int number;
+}
+
+/** Another class in a different package */
+class CurrentAccount extends Account {
+    // This class does not have access to `number` variable
+   
+}
+```
+
+But if the sub-class is from a different package, then the child class does not have access to the parent classes `package-private` variables and methods. 
+
+### #82 protected Access Modifier
+
+Access Modifiers
+
+#79 - `private`
+#80 - `public`
+#81 - `package-private` or `default`
+
+We have seen `private`, `public` and `default` access modifiers in #79 and #80 and #81. 
+
+
+```java
+class Account {
+
+    protected int number;
+}
+```
+
+
+There is another access modifier called `protected`. It is less restrictive than `private`, but more restrictive than `public`. 
+
+
+```java
+class Account {
+
+    protected int number;
+}
+
+/** Another class in the same package */
+class Main {
+
+    public static void main (String[] args){
+        Account account = new Account();
+        account.number = 1;
+        System.out.println(account.number);
+    }
+}
+```
+
+Just like `package-private`, any class within the same package can access `protected` members. 
+
+```java
+class Account {
+
+    protected int number;
+}
+
+/** Another class in a different package */
+class CurrentAccount extends Account {
+    // This class has access to `number` variable
+   
+}
+```
+
+However, unlike `package-private` any child class either within the package or outside the package has access to all `protected` members of the `parent` class. 
+
+### #83 private vs public vs protected vs default
+
+Access Modifiers
+
+#79 - `private`
+#80 - `public`
+#81 - `package-private` or `default`
+#82 - `protected`
+
+We have seen `private`, `public`, `default` and `protected` access modifiers in #79, #80, #81 and #82. In this video we are going to summarize the differences between them. 
+
+
++-------------------------------------------------------------+
+| Access Level    |  Same    |   Same  | Subclass | Outside   |
+|                 |  Class   | Package |          | Package   |
++-----------------+----------+---------+- --------+-----------+
+| private         |  Yes     |   No    |    No    |      No   |
+| package-private |  Yes     |   Yes   |   Yes*   |      No   |
+| protected       |  Yes     |   Yes   |   Yes*   |      No   |
+| public          |  Yes     |   Yes   |    Yes   |      Yes  |
++-------------------------------------------------------------+
+
+The first column is kinda lame. Same class means, any method can access any other variable or method within the same class irrespective of its access modifier.
+
+The second column `same package` means, if any other class in the same package can access the variables and methods within another class. Except for methods and variables declared as `private`, all other access modifiers give access to other classes within the same package.
+
+The fourth column talks about the same thing but outside the package. 
+
+The third column subclass talks about the same concept, but in the context of inheritance. Only private variables and methods are not passed on from parent to child. 
+
+We have to be a bit careful about these accesses. The difference is that sub-classes can inherit default variables within the same package, but not from a different package. However, protected does not have that restriction.  
 
 
 
 
 
-
-### #81 What is a protected Access Modifier
-
-
-
-
-
-### #82 What is the default Access Modifier
+### #84 What is the default Access Modifier
 
 
 
