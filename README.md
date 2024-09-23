@@ -4052,10 +4052,52 @@ The third column subclass talks about the same concept, but in the context of in
 We have to be a bit careful about these accesses. The difference is that sub-classes can inherit default variables within the same package, but not from a different package. However, protected does not have that restriction.  
 
 
+### #84 Can you overload the main method
+
+```java
+class Example {
+    public static void main (String[] args){
+
+    }
+}
+```
+
+We know that this is how the main method is written. It is declared `public` and `static` with a return type of void. It also takes in an array of `String`s as arguments. 
+
+```java
+class Example {
+    public static int main (String[] args){
+
+    }
+}
+```
+
+But, what if we want to specify the return type as `int` instead of `void` ? Will Java complain ? 
+
+No, it doesn't. 
+
+`public void main (String[] args)`
+
+`public int main ()`
+
+`public void main()`
+
+In fact it is perfectly legal to have any variation of the `main` method. 
+
+`public static void main (String[] args)`
+
+However, JVM looks for a specific signature of the main method to start the program. And it should have this kind of a signature only - `public static void main` with an array of Strings as arguments. 
+
+You are free to overload the main method with as many alternate signatures as you want, but just make sure that this particular version is always available. 
+
+```sh
+Error: Main method not found in class Main, please define the main method as:
+   public static void main(String[] args)
+```
+
+If you don't specify this, you don't get a compile time error, but you get a run time error saying `Main method not found`, which means, Java is expecting you to declare that particular variation of the `main` method. 
 
 
-
-### #84 What is the default Access Modifier
 
 
 
