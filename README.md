@@ -4043,7 +4043,7 @@ We have seen `private`, `public`, `default` and `protected` access modifiers in 
 
 The first column is kinda lame. Same class means, any method can access any other variable or method within the same class irrespective of its access modifier.
 
-The second column `same package` means, if any other class in the same package can access the variables and methods within another class. Except for methods and variables declared as `private`, all other access modifiers give access to other classes within the same package.
+The second column `same package` means, any other class in the same package can access the variables and methods within another class. Except for methods and variables declared as `private`, all other access modifiers give access to other classes within the same package.
 
 The fourth column talks about the same thing but outside the package. 
 
@@ -4096,6 +4096,163 @@ Error: Main method not found in class Main, please define the main method as:
 ```
 
 If you don't specify this, you don't get a compile time error, but you get a run time error saying `Main method not found`, which means, Java is expecting you to declare that particular variation of the `main` method. 
+
+### #85 Can sub-classes override Access Levels
+
+```java
+class Parent {
+    protected void show() {
+        System.out.println("Parent show");
+    }
+}
+```
+
+Imagine a parent class like this with a `protected` method.
+
+```java
+class Child extends Parent {
+    // Allowed: More accessible (public)
+    @Override
+    public void show() {
+        System.out.println("Child show");
+    }
+}
+```
+
+In the child class, can you override the access level of the same method from `protected` to `public` ? Yes, you can. However, there are some constraints that need to be followed.
+
+- private (least accessible)
+- default (no modifier, package-private)
+- protected
+- public (most accessible)
+
+In terms of access levels, we know that `private` is the most restrictive and `public` is the least. 
+
+When overriding methods, make sure that the access level is expansive not restrictive. 
+
+`private` -> `public`  (Allowed)
+
+`protected` -> `private` (Not allowed)
+
+For example, you can override a `private` method in a parent class into a `public` method in a child class. But you can't make a `protected` method to a `private` one. 
+
+```java
+class Parent {
+    protected void show() {
+        System.out.println("Parent show");
+    }
+}
+
+class Child extends Parent {
+    // Allowed: More accessible (public)
+    @Override
+    public void show() {
+        System.out.println("Child show");
+    }
+
+    // Not allowed: Less accessible (private)
+    @Override
+    private void show() { // Compile-time error
+        System.out.println("Child show");
+    }
+}
+```
+
+```java
+// Allowed: More accessible (public)
+@Override
+public void show() {
+    System.out.println("Child show");
+}
+```
+So, this is possible, 
+
+```java
+// Not allowed: Less accessible (private)
+@Override
+private void show() { // Compile-time error
+    System.out.println("Child show");
+}
+```
+
+but this is not. 
+
+This applies ONLY to methods. Overriding Access modifiers of variables is NOT possible. 
+
+### #86 Can you make a class private
+
+```java
+// Not allowed
+private class MyClass { // Compile-time error
+    // code
+}
+```
+
+No, it's not possible to have private classes. Java will throw a compile time error. 
+
+
+```java
+// Allowed for inner class
+class Outer {
+    private class Inner {
+        // code
+    }
+}
+```
+
+The only exception is inner classes which can be private. 
+
+```java
+// Not allowed
+private class MyClass { // Compile-time error
+    // code
+}
+```
+
+There is a simple logic for this. Top level classes cannot be private because Java needs them to be accessible from outside for object creation and execution. 
+
+```java
+// Allowed for inner class
+class Outer {
+    private class Inner {
+        // code
+    }
+}
+```
+Inner classes or classes inside classes can be `private`. Since they are private within the outer class, their access can be restricted within the class and there is no need for object creation outside of that context. 
+
+### #87 Can you make a class protected
+
+In #86, we have seen that top level classes cannot be marked as private. 
+
+```java
+// Not allowed: protected class
+protected class MyClass {  // Compile-time error
+    // code
+}
+```
+
+Can, you mark it as `protected` ? No, similar to `private` , top level classes cannot be marked as `protected`. Java will throw a compile time error. Let's explore why.
+
+
+`protected` is used to allow access to fields or methods within the package and by subclasses. 
+
+
+However, classes are not inherited in the same way as methods or fields - so protected is NOT applicable. 
+
+
+
+```java
+// Allowed: public or package-private
+class MyClass {
+    // code
+}
+```
+
+So, java allows ONLY `public` or `package-private` by default. `private` and `protected` access modifiers are not allowed. 
+
+
+
 
 
 
