@@ -4251,6 +4251,387 @@ class MyClass {
 
 So, java allows ONLY `public` or `package-private` by default. `private` and `protected` access modifiers are not allowed. 
 
+### #88 Can you have private abstract methods in Abstract class
+
+
+```java
+abstract class AbstractClass {
+    // Not allowed: private abstract method
+
+    // Compile-time error
+    // private abstract void myMethod(); 
+
+    // Allowed: protected or public abstract method
+    protected abstract void myMethod();
+}
+```
+
+No, an abstract method in an abstract class cannot be declared as private. Let's understand why.
+
+
+```java
+abstract class AbstractClass {
+
+    // Allowed: protected or public abstract method
+    protected abstract void myMethod();
+}
+
+class SubClass extends AbstractClass {
+    @Override
+    public void myMethod() {
+        System.out.println("Implemented in SubClass");
+    }
+}
+```
+The purpose of an abstract method is to provide a contract for subclasses to implement. If an abstract method is declared as private, it would not be visible to any subclasses - meaning, those subclasses would NOT have a way to implement the method. 
+
+This defaults the purpose of declaring it as abstract. The same principle applies to interfaces as well. 
+
+### #89 What are exceptions
+
+```java
+public class ExceptionExample {
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3};
+
+        // This will throw ArrayIndexOutOfBoundsException
+        System.out.println(numbers[5]); 
+    }
+}
+```
+
+Exceptions are events that occur during the execution of a program that disrupt the normal flow of instructions.
+
+For example, here we have an array of length 3, but we are trying to access the fifth element in the array. At this point, Java doesn't know what to do and just stops the execution of the program. 
+
+```java
+public class ExceptionExample {
+    public static void main(String[] args) {
+        try {
+            int[] numbers = {1, 2, 3};
+            System.out.println(numbers[5]); // This will throw ArrayIndexOutOfBoundsException
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Array index is out of bounds: " + e.getMessage());
+        }
+    }
+}
+```
+
+To be able to handle these types or problems, we have to catch the exception and do remedial action. For example, this is an Index out of bounds exception and we have to explicitly catch that exception. 
+
+Enclose the code in a try catch block and catch the specific exception. You can do some actions in the catch block like print a message etc. 
+
+The advantages of doing this is that Java does not crash the program. It handles the exception gracefully and keeps going. It improves the overall reliability of the program.  
+
+
+### #90 What are Checked Exceptions
+
+  +---------------------------+
+  |      Exceptions           |
+  +---------------------------+
+          /         \
+         /           \
+        /             \
++----------------+  +-----------------+
+|   Checked      |  |   Unchecked     |
+|   Exceptions   |  |   Exceptions    |
++----------------+  +-----------------+
+
+In #89, we have seen what exceptions are. There are 2 types of exceptions - Checked and Unchecked Exceptions. 
+
+In terms of writing code, most of the time, we work with Checked Exceptions. These are exceptions that Java predicts at compile time and expects you as a programmer to handle it. 
+
+```java
+// Throws IOException
+FileReader file = new FileReader("nonexistentfile.txt"); 
+```
+
+For example, when you read a file, there could be many things that go wrong 
+
+- The file is locked
+- The file is not found etc
+
+In these cases, Java throws a checked Exception, for example - IOException - and Java expects that you handle it. And Java warns you about this right at the time of compilation. That is why they are called `checked` exceptions, because Java checks them right at compile time. 
+
+```java
+import java.io.FileReader;
+import java.io.IOException;
+
+public class FileReadExample {
+    public static void main(String[] args) {
+        try {
+            FileReader file = new FileReader("nonexistentfile.txt");
+            // Additional code to read from the file can go here
+
+        } catch (IOException e) {
+            System.out.println("An error occurred " + e.getMessage());
+        }
+    }
+}
+```
+
+To handle this, wrap it in a `try` `catch` block and handle the specific exception before moving on to the next step. 
+
+- IOException
+- FileNotFoundException
+- SQLException
+- ClassNotFoundException
+- InterruptedException
+
+Here are some examples of most commonly occuring Exceptions. 
+
+### #91 What are UnChecked Exceptions
+
+
+#90 - Checked Exceptions
+
+In #90, we have seen Checked Exceptions. These are exceptions that are handled at compile time - meaning, these are predictable. 
+
+Unchecked Exceptions on the other hand are not predicatable. The program is not supposed to recover from these. 
+
+```java
+public class NullPointerExceptionExample {
+    public static void main(String[] args) {
+        String str = null;
+        System.out.println(str.length()); // Causes NullPointerException
+    }
+}
+```
+
+A good example is `NullPointerException`. For example, here, we have a string variable pointing to null - and we are trying to get the length of that string. 
+
+Since this is an Unchecked Exception, Java doesn't expect that you enclose this within a try catch block. 
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+        try{
+            String str = null;
+            System.out.println(str.length()); // Causes NullPointerException
+        }catch(NullPointerException e){
+            System.out.println(e);
+        }
+    }
+}
+```
+
+If you can predict the problem though, you are free to catch the exception. But it is typically better to fix the underlying issue rather than catch Unchecked exceptions. 
+
+
+### #92 Why is the `finally` block used
+
+```java
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) {
+        FileReader reader = null;
+        try {
+            reader = new FileReader("example.txt");
+            // Perform file operations
+        } catch (IOException e) {
+            System.out.println("Caught IOException: " + e.getMessage());
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close(); // Ensures the file is closed
+                }
+            } catch (IOException e) {
+                System.out.println("Error closing file: " + e.getMessage());
+            }
+            System.out.println("File handling completed.");
+        }
+    }
+}
+```
+
+The purpose of `finally` in a `try` `catch` block is to ensure that you clean-up or release resources. 
+
+```java
+reader = new FileReader("example.txt");
+```
+For example, here we read a file in the `try` block and perform some file operations. But since file is an external resource, anything can go wrong in the try block - like file not found or file getting locked etc.  
+
+```java
+System.out.println("Caught IOException: " + e.getMessage());
+```
+
+This is being caught as an exception here. 
+
+```java
+reader = new FileReader("example.txt");
+```
+
+But what happens to the `FileReader` variable, which is still pointing to the file system ? The program has to close it before exiting. Otherwise, this results in a deadlock. 
+
+```java
+ finally {
+    try {
+        if (reader != null) {
+            reader.close(); // Ensures the file is closed
+        }
+    } catch (IOException e) {
+        System.out.println("Error closing file: " + e.getMessage());
+    }
+    System.out.println("File handling completed.");
+}
+```
+
+That's why, we have the `finally` block. Java ensures that irrespective of what happens in the `try` `catch` block, the `finally` block always runs. This gives us a chance to do clean-up activities like release resources etc. In this case, we just ensure that the file handler is closed. 
+
+However, the `finally` block is optional. You can choose to just do `try` `catch` and not implement the `z` block. 
+
+
+### #93 what is Exception Propogration (`throw` keyword)
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        try {
+            divide(10, 0); 
+        } catch (ArithmeticException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // Method that throws an unchecked exception (ArithmeticException)
+    public static void divide(int a, int b) {
+        if (b == 0) {
+            throw new ArithmeticException("not allowed.");
+        } else {
+            System.out.println("Result: " + a / b);
+        }
+    }
+}
+```
+
+Imagine you have a method `divide(a,b)` that divides two integers - `a` divided by `b`. 
+
+```java
+if (b == 0)
+```
+But, what if `b` is `0` ? It results in a runtime exception, right ? Say, you don't want the method divide() to handle it. 
+
+```java
+public static void main(String[] args) {
+    try {
+        divide(10, 0); 
+```
+
+Instead, you want the calling method, in this case `main` to handle it. 
+
+```java
+throw new ArithmeticException("not allowed.");
+```
+
+In this case, instead of using the `try` `catch` block in the `divide` method, just throw the exception back to the calling class using the `throw` keyword. 
+
++------------------+       +------------------+       +------------------+
+|   Method C       |       |   Method B       |       |   Method A       |
+|  (throws ex)     |       | (calls Method C) |       | (calls Method B) |
++------------------+       +------------------+       +------------------+
+         |                          |                           |
+         |                          |                           |
+         |------------------>       |------------------>        |
+         |   Exception Thrown       |    Exception Propagated   |
+         |                          |                           |
+  +------------------+       +------------------+       +------------------+
+  |  No try-catch    |       |  No try-catch    |       |   try-catch      |
+  |  block present   |       |  block present   |       |   block present  |
+  +------------------+       +------------------+       +------------------+
+                                                    |
+                                                    |
+                                        Exception caught and handled
+
+For example, here, Method C doesn't want to handle the exception, but throws it to the called method - Method B. Method B doesn't want to handle it either and throws it back to it's calling class Method A. When exceptions are not handled in the current method but thrown back to the calling method, it is called Exception propogation. You throw an exception using the `throw` keyword.
+
+### #94 `throw` vs `throws` in Java
+
+In Java, `throw` and `throws` are both related to Exception Handling, but serve different purposes. 
+
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        try {
+            divide(10, 0); 
+        } catch (ArithmeticException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // Method that throws an unchecked exception (ArithmeticException)
+    public static void divide(int a, int b) {
+        if (b == 0) {
+            throw new ArithmeticException("not allowed.");
+        } else {
+            System.out.println("Result: " + a / b);
+        }
+    }
+}
+```
+
+When a method does not want to handle an exception, it uses the `throw` key word, creates a new instance of an Exception and throws it to the calling class. This is called Exception propogation, which we have seen in # 93.  
+
+Divide by zero is an example of an unchecked exception.
+
+```java
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            readFile("file.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // Method declares that it throws FileNotFoundException
+    public static void readFile(String fileName) throws FileNotFoundException {
+        File file = new File(fileName);
+        FileReader reader = new FileReader(file); // This might throw FileNotFoundException
+    }
+}
+```
+
+What about a checked exception like `FileNotFoundException` ? If you want a method to not handle checked exceptions, you have to explicitly declare the method with the throws keyword followed by the exception you wish the calling method handle.
+
+```java
+File file = new File(fileName);
+FileReader reader = new FileReader(file); // This might throw FileNotFoundException
+```
+In this case, any of these lines can throw the checked exception FileNotFound. 
+
+```java
+if (fileName == null) {
+
+    // Uses throw to explicitly throw an exception
+    throw new IllegalArgumentException("Filename cannot be null"); 
+}
+
+// Might throw FileNotFoundException
+FileReader reader = new FileReader(fileName); 
+```
+
+You can also use a combination of `throw` and `throws`. For example, here you are explititly throwing an `IllegalArgumentException` using the `throw` keyword and using the `throws` keyword to indicate that this method might throw a `FileNotFoundException`. 
+
+In summary, the `throw` keyword is used to explicitly throw an exception, while the `throws` keyword declares that a method might throw an exception, which must be handled by the calling method.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
