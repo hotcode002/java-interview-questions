@@ -1,11 +1,12 @@
 class Main {
 
     public static void main(String[] args) {
-        try{
-            String str = null;
-            System.out.println(str.length()); // Causes NullPointerException
-        }catch(NullPointerException e){
-            System.out.println(e);
+        try {
+            System.out.println("In try block");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            throw new RuntimeException("Exception from finally block");
         }
     }
 }

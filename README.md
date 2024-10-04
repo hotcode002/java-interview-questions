@@ -4241,7 +4241,7 @@ Can, you mark it as `protected` ? No, similar to `private` , top level classes c
 However, classes are not inherited in the same way as methods or fields - so protected is NOT applicable. 
 
 
-
+    `
 ```java
 // Allowed: public or package-private
 class MyClass {
@@ -4618,6 +4618,314 @@ FileReader reader = new FileReader(fileName);
 You can also use a combination of `throw` and `throws`. For example, here you are explititly throwing an `IllegalArgumentException` using the `throw` keyword and using the `throws` keyword to indicate that this method might throw a `FileNotFoundException`. 
 
 In summary, the `throw` keyword is used to explicitly throw an exception, while the `throws` keyword declares that a method might throw an exception, which must be handled by the calling method.
+
+### #95 Exception Hierarchy
+
+There are so many keywords that are thrown around when it comes to Exceptions.
+
+1. Exceptions
+2. Errors
+3. Checked Exceptions
+4. Unchecked Exceptions
+
+Sometimes it gets confusing. Luckily, Java has a simple hierarchy for this amd it's called the Exception Hierarchy. 
+
+                +-------------------+
+                |    Throwable      |  <-- Parent class of all exceptions and errors
+                +-------------------+
+                          |
+         +----------------+----------------+
+         |                                 |
+ +-----------------+               +--------------------+
+ |   Exception     |               |     Error          |  <-- Represents serious problems
+ +-----------------+               +--------------------+
+         |
+         |
+         |----------------------------------------
+         |                                        |
+ +----------------------+             +-------------------------+
+ | Checked Exception    |             | Unchecked Exception     |
+ | - IOException        |             | - RuntimeException      |
+ | - SQLException       |             | - NullPointerException  |
+ +----------------------+             +-------------------------+
+
+ At the very top, there is a class from the `java.lang` package called `Throwable`. It is the parent class or all `Exceptions` and `Errors`. Underneath that, we have Exceptions and Errors. 
+
+ We typically deal mostly with Exceptions as a Programmer. Errors represent serious problems like JVM errors, OutOfMemoryError, StackOverflowError, VirtualMachineError and so on. These are errors that the program can't recover from. 
+
+Exceptions are further divided into two types
+
+- Checked Exceptions - These are the ones that we work with 99% of the time. We have seen them in #90
+- Unchecked Exceptions - These happen at run-time because of programming errors and generally it is not recommended to catch them. We have seen them in #91
+
+This is called the Exception Hierarchy. 
+
+### #96 Multiple Exceptions in a single `catch` block
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        try {
+            // Code that may throw different exceptions
+            int[] numbers = {1, 2, 3};
+
+            // ArrayIndexOutOfBoundsException
+            System.out.println(numbers[3]); 
+
+            String str = null;
+
+            // NullPointerException
+            System.out.println(str.length()); 
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
+        } catch (NullPointerException e) {
+            System.out.println( e.getMessage());
+        }
+    }
+}
+```
+
+Yes, a single catch block can catch multiple exceptions. This code triggers two exceptions
+
+- Array Out of Bounds Exception becuase we are accessing an array element that does not exist
+- Null pointer exception because we are trying to get the length of a null string.
+
+Here we are using two `catch` blocks, each catching a single Exception separately. 
+
+Starting Java 7, we can use a single `catch` block to catch more than one `Exception`. For example, we can rewrite the catch block with multiple Exceptions separated by pipe symbol, effectively indicating an either or scenario. 
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        try {
+            // Code that may throw different exceptions
+            int[] numbers = {1, 2, 3};
+
+            // ArrayIndexOutOfBoundsException
+            System.out.println(numbers[3]); 
+
+            String str = null;
+
+            // NullPointerException
+            System.out.println(str.length()); 
+
+        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+            // Handling both exceptions
+            System.out.println("Caught an exception: " + e);
+        }
+    }
+}
+```
+
+This kind of syntax is used to make the code more concise and avoid code duplication. 
+
+
+### #97 Can a `finally` block throws an Exception
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        try {
+            System.out.println("In try block");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            System.out.prinlnt("Cleanup");
+        }
+    }
+}
+```
+
+Typically, the finally block is used to do any clean-up actions. 
+
+```java
+public class Example {
+    public static void main(String[] args) {
+        try {
+            System.out.println("In try block");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            throw new RuntimeException("Exception from finally block");
+        }
+    }
+}
+```
+But, what if your clean-up activities themselves throw an exception ? 
+
+
+```java
+throw new RuntimeException("Exception from finally block");
+```
+For example, here, there is no Exception in the `try` or `catch` block, but we are throwing an Exception in the `finally` block. This is perfectly valid and the Exception is thrown to the calling method. 
+
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        try {
+            throw new RuntimeException("try");
+        } catch (Exception e) {
+            throw new RuntimeException("catch");
+        } finally {
+            throw new RuntimeException("finally");
+        }
+    }
+}
+
+```
+
+What if two Exceptions are thrown ? One in the `try` block, another in the `catch` block and another in the `finally` block ? This one is tricky. 
+
+- The exception in the `try` block is thrown, but it's caught by the catch block.
+- The `catch` block throws another exception and the 
+- The finally block throws a third exception 
+- The only exception that propagates up is the one in the `finally` block, and the previous Exception is suppressed. 
+
+In summary, Java prioritizes exceptions in the finally block over those in the try or catch blocks. If you need both exceptions, you must manually handle them, for example by logging the exceptions before throwing new ones in the finally block.
+
+### #98 Can you Override a method that throws an Exception
+
+```java
+class Parent {
+    public void display() throws IOException {
+        // Parent method logic
+    }
+}
+
+class Child extends Parent {
+    @Override
+    public void display() throws FileNotFoundException {
+        // Child method logic
+    }
+}
+```
+
+Let's understand this first. Say the `Parent` class throws an `IOException` in the `display` method. The Child class is trying to override the display method it inherited from the `Parent` class and is throwing a `FileNotFoundException`. 
+
+The question now is , Is this valid ? 
+
+Yes it is. However, there are some constraints that have to be followed when overriding Exceptions. 
+
+**Unchecked Exceptions**
+
+Firstly, we have UnChecked Exceptions - There are no constraints. You can freely override. 
+
+**Checked Exceptions**
+
+Second, we have Checked Exceptions. The overridden method in the subclass can 
+
+```java
+class Parent {
+    public void display() throws IOException {
+        // Parent method logic
+    }
+}
+```
+
+- Throw the same Exception. For example, if the parent's method throws an `IOException`
+
+```java
+class Child extends Parent {
+    @Override
+    public void display() throws IOException {
+        // Child method logic
+    }
+}
+```
+The overridden method in the child can also throw an `IOException`. 
+
+```java
+class Child extends Parent {
+    @Override
+    public void display() throws FileNotFoundException {
+        // Child method logic
+    }
+}
+```
+- It can also throw a subclass of that Exception. For example, `FileNotFoundException` is a subclass of `IOException` - so it also works. 
+
+
+```java
+class Child extends Parent {
+    @Override
+    public void display() {
+        // Child method logic
+    }
+}
+```
+- Finally it can also choose to NOT throw an exception. That's fine too. 
+
+```java
+class Parent {
+    public void display() throws FileNotFoundException {
+        // Parent method logic
+    }
+}
+
+class Child extends Parent {
+    @Override
+    public void display() throws IOException {
+        // Child method logic
+    }
+}
+```
+
+The only thing that's not possible is for the overridden method in the child to throw a new Broader Exception. For example, Here, `FileNotFoundException` is a more specific exception than `IOException`. So, this is not allowed. 
+
+### #99 Errors vs Exceptions
+
+
+`java.lang.Object`
+    └── `java.lang.Throwable`
+        ├── `java.lang.Exception` (Recoverable)
+        │   ├── Unchecked Exceptions
+        │   └── Checked Exceptions
+
+Exceptions and Errors are both events that disrupt the normal flow of a program, but their purpose is different. 
+
+#95 - Exception Hierarchy
+#90 - Checked Exceptions
+#91 - Unchecked Exceptions
+
+
+We have already seen the Exception hierarchy in #95 and talked about Checked and Unchecked Exceptions in #90 and #91. 
+
+`java.lang.Object`
+    └── `java.lang.Throwable`
+        ├── `java.lang.Exception` (Recoverable)
+        │   ├── Unchecked Exceptions
+        │   └── Checked Exceptions
+        └── `java.lang.Error` (Not Recoverable)
+            ├── java.lang.OutOfMemoryError
+            ├── java.lang.StackOverflowError
+            ├── java.lang.VirtualMachineError
+            ├── java.lang.AssertionError
+            └── other Errors...
+
+Errors are also part of the Exception hierarchy via the `Throwable` class, but the key difference is that they are not recoverable. `OutOfMemoryError` is a good example. The programmer is not supposed to handle it via a `try` `catch` block. If the JVM goes out of memory, the program is automatically supposed to terminate. 
+
+In summary, Exceptions are recoverable events while Errors are not. 
+
+### #100 Create Custom Exceptions
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
