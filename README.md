@@ -4908,10 +4908,136 @@ Errors are also part of the Exception hierarchy via the `Throwable` class, but t
 
 In summary, Exceptions are recoverable events while Errors are not. 
 
-### #100 Create Custom Exceptions
+### #100 What are Custom Exceptions
+
+`java.lang.Throwable`
+    ├── `java.lang.Exception`
+    │   └── `java.lang.RuntimeException`
 
 
+We know that in Java, there are Checked and UnChecked Exceptions. 
 
+`java.lang.Throwable`
+    ├── `java.lang.Exception`
+    │   ├── `java.io.IOException`
+    │   ├── `java.lang.ClassNotFoundException`
+    │   ├── `java.sql.SQLException`
+    │
+    └── `java.lang.RuntimeException`
+        ├── `java.lang.ArithmeticException`
+        ├── `java.lang.ArrayIndexOutOfBoundsException`
+        ├── `java.lang.NullPointerException`
+        └── `java.lang.IllegalArgumentException`
+
+There are many standard exceptions defined in Java under each of these sections - like IOException, SQLExceptions, NullPointerException and so on. 
+
+Show shopping cart here. 
+
+Now, say you are developing an e-commerce application. 
+
+- InsufficientStockException
+- InvalidCouponException
+- PaymentFailureException
+
+You might want to create your own Exceptions that are specific to your application. Say InsufficientStockException or InvalidCouponException or PaymentFailureException. 
+
+```java
+// PaymentFailureException.java
+public class PaymentFailureException extends Exception {
+    // Constructor to accept an error message
+    public PaymentFailureException(String message) {
+        super(message); // Call the parent class constructor
+    }
+}
+```
+Here is how you can extend the `Exception` class to create a `CheckedException` for say `PaymentFailureException`. 
+
+```java
+// PaymentProcessor.java
+public class PaymentProcessor {
+    public void processPayment(double amount) throws PaymentFailureException {
+        // Simulating payment processing
+        if (amount <= 0) {
+            throw new PaymentFailureException("Payment amount must be > 0");
+        }
+
+        // Simulating a payment failure
+        boolean paymentSuccess = false; // Change this as per your logic
+        if (!paymentSuccess) {
+            throw new PaymentFailureException("Payment processing failed due to insufficient funds");
+        }
+
+        System.out.println("Payment of " + amount + " processed successfully.");
+    }
+}
+```
+
+And when you process payment, your method can throw this custom Exception - `PaymentFailureException`.
+
+
+### #101 `try` with resources
+
+```java
+
+ResourceType resource = new ResourceType()
+
+try {
+    // Use the resource
+} catch (ExceptionType e) {
+    // Handle exceptions
+} finally {
+    // clean-up resources
+}
+```
+Typically you create resources before the `try` statement, use them in the `try` block and finally clean-up the resources in the `finally` block. 
+
+```java
+try (ResourceType resource = new ResourceType()) {
+    // Use the resource
+} catch (ExceptionType e) {
+    // Handle exceptions
+} finally {
+    // Optional: Do something after resource is closed
+}
+```
+
+Java also provides a new way of doing this called `try-with-resources`. Instead of creating the resource before the `try` block, create the resource in the try statement within paranthesis. This way of creating resources within the try block is called `try-with-resources`. The `try-with-resources` block automatically closes these resources once the try block finishes execution, which is particularly useful in managing exceptions.
+
+```java
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class TryWithResourcesExample {
+    public static void main(String[] args) {
+        try (BufferedReader br = new BufferedReader(new FileReader("example.txt"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Here is an example. Consider resources like `FileReader`, `BufferedReader`. 
+
+```java
+ try (BufferedReader br = new BufferedReader(new FileReader("example.txt"))) {
+```
+
+You create them like this inside the paranthesis of the `try` block. Use those resources inside the `try` block. Java ensures that the resources are automatically closed after the block is executed, even if an exception is thrown.
+
+```java
+BufferedReader br = new BufferedReader(new FileReader("example.txt"))
+```
+
+However, please remember that the resources must implement the `AutoCloseable` interface.  So when any resources that implements the `AutoCloseable` interface is used used inside the `try-with-resources` block, Java automatically calls the `close()` method at the end of the block. This ensures the resource is properly closed, avoiding potential resource leaks.
+
+
+### #102 `try` with resources
 
 
 
