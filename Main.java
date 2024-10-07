@@ -2,11 +2,11 @@ class Main {
 
     public static void main(String[] args) {
         try {
-            System.out.println("In try block");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } finally {
-            throw new RuntimeException("Exception from finally block");
+            // Simulating an exception
+            throw new NumberFormatException("Invalid number format");
+        } catch (NumberFormatException e) {
+            // Wrapping the caught exception with a custom one
+            throw new RuntimeException("Error processing input", e);
         }
     }
 }

@@ -4721,7 +4721,7 @@ public class Main {
 This kind of syntax is used to make the code more concise and avoid code duplication. 
 
 
-### #97 Can a `finally` block throws an Exception
+### #97 Can a `finally` block throw an Exception
 
 ```java
 public class Main {
@@ -5037,10 +5037,160 @@ BufferedReader br = new BufferedReader(new FileReader("example.txt"))
 However, please remember that the resources must implement the `AutoCloseable` interface.  So when any resources that implements the `AutoCloseable` interface is used used inside the `try-with-resources` block, Java automatically calls the `close()` method at the end of the block. This ensures the resource is properly closed, avoiding potential resource leaks.
 
 
-### #102 `try` with resources
+### #102 What is Exception Chaining
 
 
+```java
+try {
+    // Simulating an exception
+    throw new NumberFormatException("Invalid number format");
+} catch (NumberFormatException e) {
+    // Wrapping the caught exception with a custom one
+    throw new RuntimeException("Error processing input", e);
+}
+```
 
+Exception chaining in Java is a mechanism that allows one exception to reference another exception, typically to provide more context for debugging and handling errors. 
+
+In this example, a NumberFormatException is caught, and a new RuntimeException is thrown, but the original exception (NumberFormatException) is passed as the cause, preserving the original error details.
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+        try {
+            // Simulating an exception
+            throw new NumberFormatException("Invalid number format");
+        } catch (NumberFormatException e) {
+            // Wrapping the caught exception with a custom one
+            throw new RuntimeException("Error processing input", e);
+        }
+    }
+}
+```
+
+When you run this program, 
+
+```sh
+Exception in thread "main" java.lang.RuntimeException: Error processing input
+        at Main.main(Main.java:9)
+Caused by: java.lang.NumberFormatException: Invalid number format
+        at Main.main(Main.java:6)
+```
+
+since the last Exception - `RunTimeException` wraps the caught Exception - `NumberFormatException` and rethrows it, you get the details of both the errors
+
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+        try {
+            // Simulating an exception
+            throw new NumberFormatException("Invalid number format");
+        } catch (NumberFormatException e) {
+            // Wrapping the caught exception with a custom one
+            throw new RuntimeException("Error processing input", e);   // <-----
+        }
+    }
+}
+```
+
+- The last thrown Exception 
+
+```java
+class Main {
+
+    public static void main(String[] args) {
+        try {
+            // Simulating an exception
+            throw new NumberFormatException("Invalid number format");  // <-----
+        } catch (NumberFormatException e) {
+            // Wrapping the caught exception with a custom one
+            throw new RuntimeException("Error processing input", e);   
+        }
+    }
+}
+```
+- And the Exception that caused it. 
+
+
+### #103 `try` block without a `catch` block ?
+
+```java
+try {
+    // code that might throw an exception
+} finally {
+    // code that will always run, regardless of an exception
+}
+```
+
+Yes, a `try` block can exist without a `catch` block, but only if it is followed by a `finally` block. If you have neither the `catch` nor the `finally` block, it will result in compilation error. 
+
+```java
+try {
+    // Open and work with a file
+
+    // Might throw an Exception
+} finally {
+    // No need to catch the Exception. 
+    // Throw it back to the caller
+
+    // Close the file
+}
+```
+
+Sometimes, the `try` block might throw an Exception, but you might not want to `catch` it. Java is OK with that. But Java wants to ensure that the resources are closed. That's why the `finally` block is required by Java if you don't do the `catch` block. 
+
+### #104 Can a constructor `throw` an exception
+
+```java
+class Main {
+    private BufferedReader reader;
+
+    // Constructor that can throw IOException
+    public Main() throws IOException {
+        // Attempting to open a file
+        reader = new BufferedReader(new FileReader("File.xml"));
+    }
+
+}
+```
+
+Yes, Constructors in Java can throw both Checked or Unchecked Exceptions. For example, here the constuctor can throw an IOException which is a Checked Exception, So, it must be declared using the `throws` clause in the constructor definition.
+
+```java
+class Main {
+    private BufferedReader reader;
+
+    // Constructor that can throw NullPointerException
+    public Main(String file) {
+
+        if (file.length == 0){
+            System.out.println("Invalid file");
+        }
+        
+    }
+}
+```
+
+On the other hand Unchecked Exceptions need not be declared. For example, here, there could be a null pointer exception, which is an unchecked exception. So, it need not be declared in the constructor with the `throws` keyword. 
+
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        try {
+            MyClass obj = new MyClass();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Caught exception: " + e.getMessage());
+        }
+    }
+}
+```
+However, When you create a Constructor that can throw a Checked Exception, Java forces you to enclose the code in a try catch block to explicitly catch the Exception at compile time. 
+
+ 
 
 
 
