@@ -4890,7 +4890,7 @@ Exceptions and Errors are both events that disrupt the normal flow of a program,
 #91 - Unchecked Exceptions
 
 
-We have already seen the Exception hierarchy in #95 and talked about Checked and Unchecked Exceptions in #90 and #91. 
+We have already seen the Exception hierarchy in #95 and talked about Checked and Unchecked Exceptions in #90 and #91. Checked Exceptions are recoverable via the `try` `catch` block. You can also recover from Unchecked Exceptions via the `try` `catch` block, but it is not recommended. 
 
 `java.lang.Object`
     └── `java.lang.Throwable`
@@ -5188,7 +5188,97 @@ public class Main {
     }
 }
 ```
-However, When you create a Constructor that can throw a Checked Exception, Java forces you to enclose the code in a try catch block to explicitly catch the Exception at compile time. 
+However, When you call a Constructor that can throw a Checked Exception, Java forces you to enclose the code in a try catch block to explicitly catch the Exception at compile time. 
+
+### #105 What is an array
+
+
++----------------------------------------+
+| Index    |  0  |  1  |  2  |  3  |  4  |  
++----------------------------------------+
+| Value    | 10  | 20  | 30  | 40  | 50  |
++----------------------------------------+
+
+An array is a sequence of homogeneous elements with fixed size.
+
+```java
+int[] array = new int[5];
+```
+For example, here we are declaring an integer array with space for 5 elements. 
+
+```java
+array[0]    // The value is 0
+```
+Since, we have not put any values in the array yet, the value of each of the elements in the array defaults to `0`.
+
+```java
+int[] array = {1, 2, 3, 4, 5};
+```
+You can declare and initialize an array by enclosing the elements in flower brackets. 
+
+```java
+String[] words = {"Campus","Hire"};
+double[] numbers = {1.1, 2.2, 3.3};
+boolean[] flags = {true, false};
+char[] letters = {'a', 'b', 'c'};
+```
+You can also create an array of Strings, numbers, booleans or characters.
+
+```java
+class Student {
+    String name;
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Create an array of Student objects
+        Student[] students = new Student[3];
+    }
+}
+```
+or even an array of objects. For example, we have a `Student` class, and we are creating a `students` array with 3 `Student` Objects in it. 
+
+### #106 Limitations of an array
+
+Arrays have 3 main issues. 
+
+```java
+char[] letters = {'a', 'b', 'c'};
+```
+
+```java
+String[] words = new String[3];
+```
+
+1. **Fixed Size** -  Once an array is created, its size cannot be changed. In the first case, we are declaring a char array and initializing it with 3 characters. So, the size if fixed to 3. In the second case, we are declaring an array of Strings and asking java to store space for 3 Strings. If we want to increase the size, the only way is to create a new array and copy over the elements to the new array. This is a very cumbersome process.
+
+```java
+char[] letters = {'a', 'b', 'c'};
+```
+2. **Homogeneous Data Types** -  Arrays can only store one data type. The array letters here can only store `char` data type. This makes the code type-safe, but the disadvantage is that it makes the code less flexible. 
+
+3. **No Built-in Methods** - Java arrays don't come with built-in methods for common tasks like adding, removing, or searching for elements. You have to implement these operations yourself or use a data structure from the Collections framework, such as ArrayList.
+
+
+
+We have completed 100 Interview Questions in Java so far. On top of posting them on Youtube and Insta, We have compiled all of them on our website into a free course that anybody can view. To get the link to the course, click on our profile links, go to the  Linktr.ee link and inside that click the link titled "Java Interview Questions". All the interview questions are neatly organized into topics. We have included notes as well in the notes section. So far, we have covered the following topics
+
+- Variables and Data Types
+- Operators and Expressions
+- Strings
+- Object Oriented Programming
+- and Exceptions
+
+In the next 30 days, we will cover the following topics
+
+- Multithreading
+- Packages
+- IO Streams
+- and Arrays
+
+
+
+
 
  
 
