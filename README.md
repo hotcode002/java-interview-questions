@@ -5257,7 +5257,277 @@ char[] letters = {'a', 'b', 'c'};
 ```
 2. **Homogeneous Data Types** -  Arrays can only store one data type. The array letters here can only store `char` data type. This makes the code type-safe, but the disadvantage is that it makes the code less flexible. 
 
+Original Array:
++---+---+---+
+| 1 | 2 | 3 |
++---+---+---+
+
++---+---+---+---+
+| 1 | 2 | 3 | 4 |
++---+---+---+---+
+              ^
+              |
+          Add a new element 
+
+Original Array:
++---+---+---+---+
+| 1 | 2 | 3 | 4 |
++---+---+---+---+
+          ^
+          |
+    Remove this element
+
++---+---+---+
+| 1 | 2 | 4 |
++---+---+---+
+
+
+
 3. **No Built-in Methods** - Java arrays don't come with built-in methods for common tasks like adding, removing, or searching for elements. You have to implement these operations yourself or use a data structure from the Collections framework, such as ArrayList.
+
+
+### #107 2-dimensional Array
+
+          Column 0   Column 1   Column 2
+        +--------------------------------+
+Row 0   |  [0][0]     [0][1]     [0][2]  |
+        +--------------------------------+
+Row 1   |  [1][0]     [1][1]     [1][2]  |
+        +--------------------------------+
+Row 2   |  [2][0]     [2][1]     [2][2]  |
+        +--------------------------------+
+
+A 2-d array is a matrix with rows and columns. For example, this is a 3x3 matrix with 3 rows and 3 columns. 
+
+```java
+dataType[][] arrayName = new dataType[rows][columns];
+```
+
+It is essentially an array of arrays and this is how you declare it in Java. Instead of a single array, we use two arrays and on the right, we specify the rows first and columns next. 
+
+
+          Column 0   Column 1   Column 2
+        +--------------------------------+
+Row 0   |    1          2          3     |
+        +--------------------------------+
+Row 1   |    4          5          6     |
+        +--------------------------------+
+Row 3   |    7          8          9     |
+        +--------------------------------+
+
+To create and initialize a 2d matrix like this with the numbers 1 to 9, 
+
+
+```java
+int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+```
+
+specify them as an array of arrays like this. 
+
+```java
+matrix[0][0] = 10; 
+```
+
+If you want to access a specific element say the first element `1`, and change it to say `10`, use the `row`, `column` notation like so. 
+
+### #108 How to iterate over an array
+
+```java
+int[] arr = {1, 2, 3, 4, 5};
+for (int i = 0; i < arr.length; i++) {
+    System.out.println(arr[i]);
+}
+```
+
+Traversing or iterating over an array is really simple. Use the for loop. You can get the length of an array using the `.length` attribute. Observe that `.length` is not a method. It does not have the paranthesis. it is just an attribute of the array. 
+
+```java
+int[] numbers = {1, 2, 3, 4, 5};
+for (int num : numbers) {
+    System.out.println(num);
+}
+```
+
+You can also use the enhanced `for` loop. This way, you don't need to bother about the `length` of the array. The enhanced for loop takes care of it automatically. 
+
+```java
+int[] numbers = {1, 2, 3, 4, 5};
+int i = 0;
+while (i < numbers.length) {
+    System.out.println(numbers[i]);
+    i++;
+}
+```
+You can also use the `while` or `do-while` loops. 
+
+```java
+int[] numbers = {1, 2, 3, 4, 5};
+Arrays.stream(numbers).forEach(num -> System.out.println(num));
+```
+or starting Java 8 , you can use Streams. 
+
+```java
+Arrays.stream(numbers)
+```
+The Arrays class from the `java.util` package has a `stream` method that can convert the `array` into a `stream`. 
+
+```java
+forEach(num -> System.out.println(num));
+```
+Once you have the stream, use the `forEach` method which returns one element at a time.
+
+
+### #109 How to sort an array
+
+```java
+int[] numbers = {5, 2, 9, 1, 5, 6};
+```
+Say, we have an array of numbers. 
+
+```java
+
+import java.util.Arrays;
+
+public class SortArray {
+    public static void main(String[] args) {
+        int[] numbers = {5, 2, 9, 1, 5, 6};
+        
+        // Sort the array in ascending order
+        Arrays.sort(numbers);
+        
+        // Print sorted array
+        System.out.println(Arrays.toString(numbers));
+    }
+}
+```
+We can use the Arrays utility class to sort the array. Just import the `Arrays` class and use the inbuilt `sort` method. The array is sorted. 
+
+```java
+import java.util.Arrays;
+
+public class SortStringArray {
+    public static void main(String[] args) {
+        String[] words = {"banana", "apple", "orange", "mango"};
+        
+        // Sort the array alphabetically
+        Arrays.sort(words);
+        
+        // Print sorted array
+        System.out.println("Sorted Array: " + Arrays.toString(words));
+    }
+}
+```
+
+We can even sort an array of Strings. With Strings, the sorting is done in alphabetic order. 
+
+There are many other ways to sort arrays using
+
+- Streams
+- Collections
+- Lambda Expressions
+- or even Manual Sorting for example, using Bubble sort.
+
+We will discuss these options later. 
+
+### #110 What is Comparator Interface
+
+```java
+// Sort the array in ascending order
+Arrays.sort(numbers);
+```
+
+In #109, we have seen how to sort an array. That was really simple. 
+
+```java
+public class Person {
+    public String name;
+    public int age;
+
+    // Constructor
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+
+```
+
+What if Objects need to be sorted ? For example, imagine a `Person` class with `name` and `age`. 
+
+```java
+Person[] people = {
+    new Person("Alice", 30),
+    new Person("Bob", 25),
+    new Person("Charlie", 35),
+    new Person("Dave", 20)
+};
+```
+
+Say we create an array of Person objects and want to sort them. Can we do it ?
+
+```java
+import java.util.Comparator;
+```
+
+This is where the Comparator Interface comes in. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+There are many ways to sort an array and bubble sort is a good way to start. 
+
+Say, we want to sort these numbers in decreasing order - like so. Let's start by checking the first two numbers. If the first number is less than the second, swap them. Otherwise, don't. 
+
+5 > 3. So, don't swap. 
+3 > 1. So, don't swap. 
+1 < 2. So, swap them.
+1 < 8. So, swap them also.
+
+So far, the smallest number is already at the bottom. 
+
+You can see that the largest number 8, bubbled up by one position to the top. This completes the first pass. Let's move on to the second pass. 
+
+5 > 3. So, no swap
+3 > 2. So, no swap
+2 < 8. So, swap them. 
+
+Once again, the largest number bubbled up by one more position to the top. In the second pass, the last but one number is also in the correct position. So no need to swap them. Pass 2 is complete. Let's move on to the 3rd pass. 
+
+5 > 3. So, no swap.
+3 < 8. So, swap them.
+
+In this pass, the last three numbers are already in the correct sort status. So, no need to sort any further. Pass 3 is complete and let's move on to the next pass. 
+
+5 < 8. So swap them. 
+
+That's it. All the numbers are sorted. 
+
+Notice how the largest numbers are bubbling up to the top. That's why it is called Bubble Sort. 
+
+
 
 
 
@@ -5275,6 +5545,16 @@ In the next 30 days, we will cover the following topics
 - Packages
 - IO Streams
 - and Arrays
+
+
+1. Project title
+2. Define the first story ( For example, Authentication )
+3. Define the tasks in the story ( Sign up Page, Login Page, Logout Page, Forgot Password Page, Password Reset Page )
+4. Define the next story ( For example, home page )
+5. Define the tasks in the story ( Header Component, Footer, Body)
+6. Story - 
+
+EPIC -> STORY -> TASK
 
 
 

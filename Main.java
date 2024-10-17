@@ -1,10 +1,12 @@
-import java.util.List;
 
-class Main {
+class Student {
+    String name;
+}
+
+class Main {    
     public static void main(String[] args) {
-        var message;
-        message = "Hello World";
-        var number = 42;
-        var list = List.of("A", "B", "C");
+        // Create an array of Student objects
+        Student[] students = new Student[3];
+        System.out.println(students[0]);
     }
 }
