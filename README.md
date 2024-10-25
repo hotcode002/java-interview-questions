@@ -5556,8 +5556,36 @@ In the next 30 days, we will cover the following topics
 
 EPIC -> STORY -> TASK
 
+```java
+
+try {
+    // code that may cause 
+    // OutOfMemoryError
+} catch (OutOfMemoryError e) {
+    // handle the error 
+}
+
+```
+
+<-----1080----->
+|
+|
+|
+1920
+|
+|
+|
+<-------------->
+
+1080
+1350
 
 
+Posts
+1080 x 1440
+
+Reels
+1080 x 1920
 
 
  
